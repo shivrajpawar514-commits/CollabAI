@@ -3,13 +3,28 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Sparkles, Users, FolderKanban, PlusCircle, LogIn, UserCircle, LogOut } from "lucide-react";
-import { getAuthToken, clearAuthTokens, api, User } from "@/lib/api";
+import {
+  Sparkles,
+  Users,
+  FolderKanban,
+  PlusCircle,
+  LogIn,
+  LogOut,
+  Bell,
+  Check,
+  ExternalLink,
+} from "lucide-react";
+import { getAuthToken, clearAuthTokens, api, User, Notification } from "@/lib/api";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Notifications state
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +38,16 @@ export default function Navbar() {
     const token = getAuthToken();
     if (token) {
       api.getMe()
-        .then(setUser)
+        .then((u) => {
+          setUser(u);
+          // Fetch notifications
+          api.getNotifications()
+            .then(setNotifications)
+            .catch(() => {});
+          api.getUnreadCount()
+            .then((res) => setUnreadCount(res.unread_count))
+            .catch(() => {});
+        })
         .catch(() => {
           clearAuthTokens();
           setUser(null);
@@ -35,6 +59,25 @@ export default function Navbar() {
     clearAuthTokens();
     setUser(null);
     window.location.href = "/";
+  };
+
+  const handleMarkAllRead = async () => {
+    try {
+      await api.markAllNotificationsRead();
+      setUnreadCount(0);
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+    } catch {}
+  };
+
+  const handleNotificationClick = async (notif: Notification) => {
+    if (!notif.is_read) {
+      api.markNotificationRead(notif.id).catch(() => {});
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notif.id ? { ...n, is_read: true } : n))
+      );
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+    }
+    setShowNotifications(false);
   };
 
   const navLinks = [
@@ -95,6 +138,71 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-3">
+              {/* Notifications Bell */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-all relative"
+                  title="Notifications"
+                >
+                  <Bell className="w-4 h-4" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-cyan-500 text-black text-[10px] font-extrabold flex items-center justify-center animate-pulse">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Notifications Popover */}
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 glass-panel rounded-2xl border border-white/15 p-4 shadow-2xl bg-[#0d101d] space-y-3 z-50 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                      <span className="font-bold text-white text-xs">Notifications</span>
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={handleMarkAllRead}
+                          className="text-[10px] text-cyan-400 hover:text-cyan-300 font-semibold"
+                        >
+                          Mark all as read
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="max-h-64 overflow-y-auto space-y-2 pr-1">
+                      {notifications.map((notif) => (
+                        <Link
+                          key={notif.id}
+                          href={notif.link || "#"}
+                          onClick={() => handleNotificationClick(notif)}
+                          className={`block p-2.5 rounded-xl border text-xs transition-all ${
+                            notif.is_read
+                              ? "bg-white/[0.02] border-white/[0.04] text-slate-400"
+                              : "bg-indigo-500/10 border-indigo-500/30 text-white"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-white">{notif.title}</span>
+                            <span className="text-[9px] text-slate-500">
+                              {new Date(notif.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
+                            {notif.message}
+                          </p>
+                        </Link>
+                      ))}
+
+                      {notifications.length === 0 && (
+                        <p className="text-center py-4 text-xs text-slate-500">
+                          No notifications yet.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Profile Link */}
               <Link
                 href="/profile/onboarding"
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-sm font-medium text-white transition-all"
@@ -104,6 +212,7 @@ export default function Navbar() {
                 </div>
                 <span className="hidden sm:inline">{user.full_name}</span>
               </Link>
+
               <button
                 onClick={handleLogout}
                 className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"

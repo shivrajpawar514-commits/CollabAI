@@ -78,6 +78,144 @@ export interface Project {
   roles: ProjectRole[];
 }
 
+// Phase 2 Types
+export interface TeamMember {
+  id: string;
+  team_id: string;
+  user_id: string;
+  role: string;
+  role_title?: string;
+  joined_at: string;
+  user: User;
+}
+
+export interface Team {
+  id: string;
+  project_id: string;
+  name: string;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+  members: TeamMember[];
+}
+
+export interface Invitation {
+  id: string;
+  project_id: string;
+  team_id: string;
+  sender_id: string;
+  recipient_id?: string;
+  type: "invite" | "join_request";
+  role_name?: string;
+  message?: string;
+  status: "pending" | "accepted" | "rejected";
+  created_at: string;
+  updated_at: string;
+  sender: User;
+  recipient?: User;
+}
+
+export interface Milestone {
+  id: string;
+  project_id: string;
+  title: string;
+  description?: string;
+  deadline?: string;
+  order_index: number;
+  status: "pending" | "in_progress" | "completed";
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TaskComment {
+  id: string;
+  task_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  user: User;
+}
+
+export interface TaskDependency {
+  id: string;
+  task_id: string;
+  depends_on_task_id: string;
+  depends_on_task?: Task;
+}
+
+export interface Task {
+  id: string;
+  project_id: string;
+  milestone_id?: string;
+  creator_id: string;
+  assignee_id?: string;
+  title: string;
+  description?: string;
+  status: "backlog" | "todo" | "in_progress" | "review" | "completed";
+  priority: "low" | "medium" | "high" | "urgent";
+  deadline?: string;
+  estimated_hours?: number;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+  assignee?: User;
+  creator: User;
+  comments_count: number;
+  dependencies?: TaskDependency[];
+  milestone?: Milestone;
+  comments?: TaskComment[];
+}
+
+export interface Message {
+  id: string;
+  project_id: string;
+  user_id: string;
+  content: string;
+  mentions: string[];
+  is_pinned: boolean;
+  created_at: string;
+  user: User;
+}
+
+export interface FileAttachment {
+  id: string;
+  project_id: string;
+  uploader_id: string;
+  file_name: string;
+  file_url: string;
+  file_size_bytes: number;
+  content_type: string;
+  created_at: string;
+  uploader: User;
+}
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  actor_id?: string;
+  title: string;
+  message: string;
+  type: string;
+  link?: string;
+  is_read: boolean;
+  created_at: string;
+  actor?: User;
+}
+
+export interface ActivityLog {
+  id: string;
+  project_id: string;
+  user_id?: string;
+  action: string;
+  entity_type: string;
+  entity_id?: string;
+  description: string;
+  extra_data: Record<string, any>;
+  created_at: string;
+  user?: User;
+}
+
 export function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("collabai_access_token");
@@ -98,9 +236,12 @@ export function clearAuthTokens() {
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = getAuthToken();
   const headers: HeadersInit = {
-    "Content-Type": "application/json",
     ...(options.headers || {}),
   };
+
+  if (!(options.body instanceof FormData)) {
+    (headers as Record<string, string>)["Content-Type"] = "application/json";
+  }
 
   if (token) {
     (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
@@ -173,4 +314,89 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
+
+  // Phase 2: Teams & Invitations
+  getTeam: (projectId: string) => request<Team>(`/projects/${projectId}/team`),
+  inviteMember: (projectId: string, body: { recipient_id: string; role_name?: string; message?: string }) =>
+    request<Invitation>(`/projects/${projectId}/team/invite`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  sendJoinRequest: (projectId: string, body: { role_name?: string; message?: string }) =>
+    request<Invitation>(`/projects/${projectId}/team/join-request`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  listProjectInvitations: (projectId: string) => request<Invitation[]>(`/projects/${projectId}/team/invitations`),
+  respondToInvitation: (invitationId: string, status: "accepted" | "rejected") =>
+    request<Invitation>(`/teams/invitations/${invitationId}/respond`, {
+      method: "PUT",
+      body: JSON.stringify({ status }),
+    }),
+  listMyInvitations: () => request<Invitation[]>("/users/me/invitations"),
+
+  // Phase 2: Milestones & Tasks
+  getMilestones: (projectId: string) => request<Milestone[]>(`/projects/${projectId}/milestones`),
+  createMilestone: (projectId: string, body: Partial<Milestone>) =>
+    request<Milestone>(`/projects/${projectId}/milestones`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  updateMilestone: (projectId: string, milestoneId: string, body: Partial<Milestone>) =>
+    request<Milestone>(`/projects/${projectId}/milestones/${milestoneId}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
+  getTasks: (projectId: string) => request<Task[]>(`/projects/${projectId}/tasks`),
+  createTask: (projectId: string, body: Partial<Task> & { dependency_ids?: string[] }) =>
+    request<Task>(`/projects/${projectId}/tasks`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  getTaskDetail: (taskId: string) => request<Task>(`/tasks/${taskId}`),
+  updateTask: (taskId: string, body: Partial<Task>) =>
+    request<Task>(`/tasks/${taskId}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
+  moveTask: (taskId: string, body: { status: string; order_index: number }) =>
+    request<Task>(`/tasks/${taskId}/move`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    }),
+  addTaskComment: (taskId: string, content: string) =>
+    request<TaskComment>(`/tasks/${taskId}/comments`, {
+      method: "POST",
+      body: JSON.stringify({ content }),
+    }),
+
+  // Phase 2: Real-Time Chat & Files
+  getMessages: (projectId: string) => request<Message[]>(`/projects/${projectId}/messages`),
+  postMessage: (projectId: string, content: string, isPinned = false) =>
+    request<Message>(`/projects/${projectId}/messages`, {
+      method: "POST",
+      body: JSON.stringify({ content, is_pinned: isPinned }),
+    }),
+  getFiles: (projectId: string) => request<FileAttachment[]>(`/projects/${projectId}/files`),
+  uploadFile: (projectId: string, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return request<FileAttachment>(`/projects/${projectId}/files/upload`, {
+      method: "POST",
+      body: formData,
+    });
+  },
+
+  // Phase 2: Notifications & Activities
+  getNotifications: () => request<Notification[]>("/notifications"),
+  getUnreadCount: () => request<{ unread_count: number }>("/notifications/unread-count"),
+  markNotificationRead: (notificationId: string) =>
+    request<{ success: boolean }>(`/notifications/${notificationId}/read`, {
+      method: "PATCH",
+    }),
+  markAllNotificationsRead: () =>
+    request<{ count: number }>("/notifications/mark-all-read", {
+      method: "POST",
+    }),
+  getActivityFeed: (projectId: string) => request<ActivityLog[]>(`/projects/${projectId}/activity-feed`),
 };
