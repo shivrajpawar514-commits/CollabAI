@@ -1,9 +1,14 @@
 import os
+import sys
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 
 from app.core.config import settings
 from app.core.db import init_db
@@ -11,6 +16,7 @@ from app.api.router import api_router
 
 UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../uploads"))
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 
 @asynccontextmanager

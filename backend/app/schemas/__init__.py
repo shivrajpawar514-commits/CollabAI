@@ -20,6 +20,11 @@ from app.schemas.chat import (
 from app.schemas.notification import (
     NotificationResponse, ActivityLogResponse
 )
+from app.schemas.ai import (
+    ProjectGenerateRequest, PlanMilestonesRequest, ApplyMilestonesRequest,
+    DecomposeTaskRequest, ApplyDecompositionRequest, CopilotChatRequest,
+    TeammateRecommendationResponse
+)
 
 __all__ = [
     "UserBase", "UserCreate", "UserLogin", "UserResponse", "Token", "TokenPayload",
@@ -33,5 +38,9 @@ __all__ = [
     "TaskBase", "TaskCreate", "TaskUpdate", "TaskMove", "TaskResponse", "TaskDetailResponse",
     "TaskCommentBase", "TaskCommentCreate", "TaskCommentResponse", "TaskDependencyResponse",
     "MessageCreate", "MessageResponse", "FileAttachmentResponse",
-    "NotificationResponse", "ActivityLogResponse"
+    "NotificationResponse", "ActivityLogResponse",
+    "ProjectGenerateRequest", "PlanMilestonesRequest", "ApplyMilestonesRequest",
+    "DecomposeTaskRequest", "ApplyDecompositionRequest", "CopilotChatRequest",
+    "TeammateRecommendationResponse"
 ]
+
