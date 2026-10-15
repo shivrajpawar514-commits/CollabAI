@@ -1,5 +1,5 @@
 import logging
-from typing import Type, TypeVar, Optional, Dict
+from typing import Type, TypeVar, Optional, Dict, AsyncGenerator
 from pydantic import BaseModel
 
 from ai.adapters.base import BaseLLMAdapter
@@ -10,6 +10,7 @@ from app.core.config import settings
 
 logger = logging.getLogger("collabai.ai")
 T = TypeVar("T", bound=BaseModel)
+
 
 
 class LLMClient:
@@ -89,3 +90,25 @@ class LLMClient:
                 prompt += f"\n\nPrevious attempt failed with error: {str(e)}. Please fix the JSON formatting to match the schema strictly."
 
         raise RuntimeError(f"Failed to generate valid structured response after {retries+1} attempts: {last_error}")
+
+    async def generate_stream(
+        self,
+        prompt: str,
+        system_instruction: Optional[str] = None,
+        temperature: float = 0.7,
+        max_tokens: int = 1500
+    ) -> AsyncGenerator[str, None]:
+        """
+        Yield streaming chunks from the underlying LLM provider.
+        """
+        try:
+            async for chunk in self.adapter.generate_stream(
+                prompt=prompt,
+                system_instruction=system_instruction,
+                temperature=temperature,
+                max_tokens=max_tokens
+            ):
+                yield chunk
+        except Exception as e:
+            logger.error(f"Error in LLM stream with {self.provider_name}: {e}")
+            raise
