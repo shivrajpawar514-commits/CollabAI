@@ -216,6 +216,114 @@ export interface ActivityLog {
   user?: User;
 }
 
+// Phase 3: AI Interfaces
+export interface RoleNeed {
+  role_name: string;
+  capacity: number;
+  skills_required: string[];
+  responsibilities: string;
+}
+
+export interface MilestonePlan {
+  week_number: number;
+  title: string;
+  deliverables: string[];
+}
+
+export interface ProjectProposal {
+  title: string;
+  problem_statement: string;
+  objectives: string[];
+  technologies: string[];
+  roles_needed: RoleNeed[];
+  architecture: string;
+  datasets: string[];
+  risks: string[];
+  metrics: string[];
+  timeline_weeks: MilestonePlan[];
+}
+
+export interface MilestoneTaskItem {
+  title: string;
+  description: string;
+  priority: string;
+  estimated_hours: number;
+  recommended_skills: string[];
+}
+
+export interface MilestoneItem {
+  title: string;
+  description: string;
+  target_week: number;
+  deliverables: string[];
+  suggested_tasks: MilestoneTaskItem[];
+}
+
+export interface MilestoneDecomposition {
+  project_title: string;
+  overview: string;
+  total_weeks: number;
+  milestones: MilestoneItem[];
+}
+
+export interface SubTaskItem {
+  title: string;
+  description: string;
+  priority: string;
+  estimated_hours: number;
+  required_skills: string[];
+  suggested_role: string;
+  dependencies: string[];
+}
+
+export interface TaskBreakdown {
+  original_task_title: string;
+  analysis: string;
+  estimated_total_hours: number;
+  subtasks: SubTaskItem[];
+  potential_risks: string[];
+  duplicate_or_conflict_warnings: string[];
+}
+
+export interface ActionSuggestion {
+  action_type: string;
+  label: string;
+  detail?: string;
+  payload: Record<string, any>;
+}
+
+export interface CopilotResponse {
+  answer: string;
+  suggested_actions: ActionSuggestion[];
+  relevant_skills: string[];
+}
+
+export interface CandidateMatch {
+  user_id: string;
+  name: string;
+  email: string;
+  avatar_url?: string;
+  college?: string;
+  branch?: string;
+  year?: string;
+  match_score: number;
+  skill_score: number;
+  interest_score: number;
+  availability_score: number;
+  matching_skills: string[];
+  missing_skills: string[];
+  preferred_roles: string[];
+  availability_hours: number;
+  explanation: string;
+}
+
+export interface TeammateRecommendationResponse {
+  project_id: string;
+  project_title: string;
+  recommendations: CandidateMatch[];
+  total_analyzed: number;
+}
+
 export function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("collabai_access_token");
@@ -399,4 +507,45 @@ export const api = {
       method: "POST",
     }),
   getActivityFeed: (projectId: string) => request<ActivityLog[]>(`/projects/${projectId}/activity-feed`),
+
+  // Phase 3: AI Capabilities
+  generateProject: (idea: string, constraints = "") =>
+    request<ProjectProposal>("/ai/generate-project", {
+      method: "POST",
+      body: JSON.stringify({ idea, constraints }),
+    }),
+
+  planMilestones: (projectId: string, timelineWeeks = 8) =>
+    request<MilestoneDecomposition>(`/ai/projects/${projectId}/plan-milestones`, {
+      method: "POST",
+      body: JSON.stringify({ timeline_weeks: timelineWeeks }),
+    }),
+
+  applyMilestones: (projectId: string, milestones: MilestoneItem[]) =>
+    request<Milestone[]>(`/ai/projects/${projectId}/apply-milestones`, {
+      method: "POST",
+      body: JSON.stringify({ milestones }),
+    }),
+
+  decomposeTask: (taskId: string, additionalContext = "") =>
+    request<TaskBreakdown>(`/ai/tasks/${taskId}/decompose`, {
+      method: "POST",
+      body: JSON.stringify({ additional_context: additionalContext }),
+    }),
+
+  applyDecomposition: (taskId: string, subtasks: SubTaskItem[], milestoneId?: string) =>
+    request<Task[]>(`/ai/tasks/${taskId}/apply-decomposition`, {
+      method: "POST",
+      body: JSON.stringify({ milestone_id: milestoneId, subtasks }),
+    }),
+
+  recommendTeammates: (projectId: string) =>
+    request<TeammateRecommendationResponse>(`/ai/projects/${projectId}/recommend-teammates`),
+
+  copilotChat: (projectId: string, message: string, chatHistory: { role: string; content: string }[] = []) =>
+    request<CopilotResponse>("/ai/copilot/chat", {
+      method: "POST",
+      body: JSON.stringify({ project_id: projectId, message, chat_history: chatHistory }),
+    }),
 };
+
