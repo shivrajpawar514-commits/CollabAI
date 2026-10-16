@@ -29,6 +29,7 @@ import {
   MessageCircle,
   Zap,
   Bot,
+  BookOpen,
 } from "lucide-react";
 import {
   api,
@@ -47,6 +48,7 @@ import DecomposeModal from "./components/DecomposeModal";
 import AiPlannerModal from "./components/AiPlannerModal";
 import TeammateMatchModal from "./components/TeammateMatchModal";
 import CopilotTab from "./components/CopilotTab";
+import ResearchTab from "./components/ResearchTab";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -64,8 +66,9 @@ function ProjectWorkspaceContent() {
   const initialTab = (searchParams.get("tab") as any) || "kanban";
 
   const [activeTab, setActiveTab] = useState<
-    "kanban" | "chat" | "copilot" | "team" | "milestones" | "files" | "activity"
+    "kanban" | "chat" | "copilot" | "research" | "team" | "milestones" | "files" | "activity"
   >(initialTab);
+
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [project, setProject] = useState<Project | null>(null);
   const [team, setTeam] = useState<Team | null>(null);
@@ -369,11 +372,13 @@ function ProjectWorkspaceContent() {
           { id: "kanban", name: "Kanban Board", icon: Kanban, count: tasks.length },
           { id: "chat", name: "Team Chat", icon: MessageSquare, count: messages.length },
           { id: "copilot", name: "AI Copilot", icon: Sparkles },
+          { id: "research", name: "AI Research (RAG)", icon: BookOpen },
           { id: "team", name: "Team & Invites", icon: Users, count: team?.members.length },
           { id: "milestones", name: "Roadmap", icon: Target, count: milestones.length },
           { id: "files", name: "Files & Assets", icon: FolderArchive, count: files.length },
           { id: "activity", name: "Activity Log", icon: Activity, count: activities.length },
         ].map((tab) => {
+
 
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -634,7 +639,16 @@ function ProjectWorkspaceContent() {
         />
       )}
 
+      {/* TAB: AI RESEARCH (RAG) */}
+      {activeTab === "research" && (
+        <ResearchTab
+          projectId={projectId}
+          projectTitle={project?.title || "Project"}
+        />
+      )}
+
       {/* TAB 3: TEAM & INVITATIONS */}
+
 
       {activeTab === "team" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
