@@ -25,6 +25,10 @@ from app.schemas.ai import (
     DecomposeTaskRequest, ApplyDecompositionRequest, CopilotChatRequest,
     TeammateRecommendationResponse
 )
+from app.schemas.rag import (
+    DocumentBase, DocumentResponse, DocumentChunkResponse,
+    CitationItem, RAGQueryRequest, RAGQueryResponse, DocumentUploadResponse
+)
 
 __all__ = [
     "UserBase", "UserCreate", "UserLogin", "UserResponse", "Token", "TokenPayload",
@@ -41,6 +45,9 @@ __all__ = [
     "NotificationResponse", "ActivityLogResponse",
     "ProjectGenerateRequest", "PlanMilestonesRequest", "ApplyMilestonesRequest",
     "DecomposeTaskRequest", "ApplyDecompositionRequest", "CopilotChatRequest",
-    "TeammateRecommendationResponse"
+    "TeammateRecommendationResponse",
+    "DocumentBase", "DocumentResponse", "DocumentChunkResponse",
+    "CitationItem", "RAGQueryRequest", "RAGQueryResponse", "DocumentUploadResponse"
 ]
+
 
