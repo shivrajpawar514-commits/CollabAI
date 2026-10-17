@@ -183,9 +183,10 @@ proposal = await client.generate_structured(
 ## 🗺 Development Roadmap
 
 - [x] **Phase 1 (Weeks 1–2):** Authentication (JWT & OAuth), Student Profiles, Skills Taxonomy, Project Discovery, Monorepo Scaffolding, and Faker Seed Script.
-- [ ] **Phase 2 (Weeks 3–4):** Teams, Invitations, Kanban Board with `dnd-kit`, Real-Time WebSocket Chat with Redis pub/sub, Activity Feed.
-- [ ] **Phase 3 (Weeks 5–7):** AI Project Generator, Structured Milestone Planner, Task Decomposition, Assignee Recommendation, Streaming SSE.
-- [ ] **Phase 4 (Weeks 8–9):** Project-specific RAG with PyMuPDF chunking, `bge-small` embeddings in pgvector, Hybrid Search, and Citations.
-- [ ] **Phase 5 (Weeks 10–12):** Matching Algorithm v2 & XGBoost synthetic ranking, Deadline Risk predictor, NetworkX Skill Graph.
+- [x] **Phase 2 (Weeks 3–4):** Teams, Invitations, Kanban Board with `dnd-kit`, Real-Time WebSocket Chat with Redis pub/sub, Activity Feed.
+- [x] **Phase 3 (Weeks 5–7):** AI Project Generator, Structured Milestone Planner, Task Decomposition, Assignee Recommendation, Streaming SSE.
+- [x] **Phase 4 (Weeks 8–9):** Project-specific RAG with PyMuPDF chunking, `bge-small` embeddings in pgvector, Hybrid Search, and Citations.
+- [x] **Phase 5 (Weeks 10–12):** Matching Algorithm v2 & XGBoost synthetic ranking, Deadline Risk predictor, NetworkX Skill Graph. See [ml/EVALUATION_REPORT.md](ml/EVALUATION_REPORT.md) for full metrics.
 - [ ] **Phase 6 (Weeks 13–14):** GitHub App Integration, PR cycle time analytics, Prometheus + Grafana monitoring.
 - [ ] **Phase 7 (Weeks 15–17):** Faster-Whisper Meeting-to-Tasks assistant, Project Knowledge Graph, Multi-Agent LangGraph Orchestrator.
+
