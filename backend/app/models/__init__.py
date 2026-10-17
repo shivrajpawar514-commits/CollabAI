@@ -7,6 +7,7 @@ from app.models.task import Milestone, Task, TaskDependency, TaskComment
 from app.models.chat import Message, FileAttachment
 from app.models.notification import Notification, ActivityLog
 from app.models.rag import Document, DocumentChunk, VectorType
+from app.models.ml import RecommendationFeedback
 
 __all__ = [
     "User",
@@ -30,5 +31,7 @@ __all__ = [
     "Document",
     "DocumentChunk",
     "VectorType",
+    "RecommendationFeedback",
 ]
+
 
