@@ -15,6 +15,10 @@ from app.models.user import User
 from app.models.profile import Profile
 from app.models.skill import Skill, UserSkill
 from app.models.project import Project, ProjectSkill, ProjectRole
+from app.models.team import Team, TeamMember, Invitation
+from app.models.task import Milestone, Task, TaskDependency, TaskComment
+from app.models.chat import Message, FileAttachment
+from app.models.notification import Notification, ActivityLog
 
 fake = Faker()
 
@@ -262,7 +266,204 @@ async def seed():
             await session.commit()
             print("✅ 20 Collaborative projects seeded with skills and roles.")
 
-    print("🎉 Database seeding complete! Ready for Phase 1 testing.")
+        # 5. Phase 2: Seed Workspace, Team, Kanban Tasks, Chat & Milestones
+        print("🌱 Seeding Phase 2 Team Workspace, Kanban Tasks, and Chat...")
+        # Get demo project (AgriVision)
+        demo_proj_res = await session.execute(
+            select(Project).where(Project.title.ilike("%AgriVision%")).limit(1)
+        )
+        demo_project = demo_proj_res.scalar_one_or_none()
+
+        if demo_project:
+            # Create Team
+            team_res = await session.execute(select(Team).where(Team.project_id == demo_project.id))
+            team = team_res.scalar_one_or_none()
+            if not team:
+                team = Team(
+                    project_id=demo_project.id,
+                    name="AgriVision Core Team",
+                    description="Autonomous cross-functional student engineering squad building edge-AI diagnostic apps."
+                )
+                session.add(team)
+                await session.flush()
+
+                # Add demo user as Lead
+                session.add(TeamMember(
+                    team_id=team.id,
+                    user_id=demo_user.id,
+                    role="owner",
+                    role_title="AI Project Lead & Backend Architect"
+                ))
+
+                # Add 2 other teammates
+                if len(created_users) >= 3:
+                    session.add(TeamMember(
+                        team_id=team.id,
+                        user_id=created_users[1].id,
+                        role="member",
+                        role_title="Mobile Flutter Developer"
+                    ))
+                    session.add(TeamMember(
+                        team_id=team.id,
+                        user_id=created_users[2].id,
+                        role="member",
+                        role_title="ML Vision Specialist"
+                    ))
+
+                # Seed Milestones
+                m1 = Milestone(
+                    project_id=demo_project.id,
+                    title="Phase 1: Dataset Pipeline & Baseline Training",
+                    description="Curate PlantVillage annotations and train baseline MobileNetV3 with 88%+ top-1 accuracy.",
+                    order_index=0,
+                    status="completed"
+                )
+                m2 = Milestone(
+                    project_id=demo_project.id,
+                    title="Phase 2: Edge Quantization & ONNX Inference",
+                    description="Quantize PyTorch model to INT8 ONNX/TFLite for sub-50ms latency on low-end Android chips.",
+                    order_index=1,
+                    status="in_progress"
+                )
+                m3 = Milestone(
+                    project_id=demo_project.id,
+                    title="Phase 3: Cross-Platform Flutter Client",
+                    description="Build responsive UI, offline SQLite cache, and local camera viewfinder.",
+                    order_index=2,
+                    status="pending"
+                )
+                session.add_all([m1, m2, m3])
+                await session.flush()
+
+                # Seed Kanban Tasks (All 5 Columns)
+                t_backlog = Task(
+                    project_id=demo_project.id,
+                    creator_id=demo_user.id,
+                    milestone_id=m3.id,
+                    title="Investigate CoreML export for iOS support",
+                    description="Evaluate CoreMLTools converter to support Apple Neural Engine alongside Android.",
+                    status="backlog",
+                    priority="low",
+                    estimated_hours=6.0,
+                    order_index=0
+                )
+                t_todo = Task(
+                    project_id=demo_project.id,
+                    creator_id=demo_user.id,
+                    assignee_id=created_users[1].id,
+                    milestone_id=m3.id,
+                    title="Build offline synchronization engine in Flutter",
+                    description="Persist diagnosis reports locally and batch-upload when cell reception is restored.",
+                    status="todo",
+                    priority="high",
+                    estimated_hours=12.0,
+                    order_index=0
+                )
+                t_in_progress = Task(
+                    project_id=demo_project.id,
+                    creator_id=demo_user.id,
+                    assignee_id=demo_user.id,
+                    milestone_id=m2.id,
+                    title="INT8 Quantization & latency benchmarking",
+                    description="Apply post-training quantization (PTQ) to MobileViT and benchmark on Snapdragon 680.",
+                    status="in_progress",
+                    priority="urgent",
+                    estimated_hours=14.0,
+                    order_index=0
+                )
+                t_review = Task(
+                    project_id=demo_project.id,
+                    creator_id=created_users[2].id,
+                    assignee_id=demo_user.id,
+                    milestone_id=m1.id,
+                    title="PR #14: FastAPI pathogen classification router",
+                    description="Review async inference endpoint with batching and Pydantic response models.",
+                    status="review",
+                    priority="high",
+                    estimated_hours=4.0,
+                    order_index=0
+                )
+                t_completed = Task(
+                    project_id=demo_project.id,
+                    creator_id=demo_user.id,
+                    assignee_id=demo_user.id,
+                    milestone_id=m1.id,
+                    title="Setup Monorepo, Docker Compose, and pgvector schema",
+                    description="Initialize database migrations, Redis pub/sub layer, and Next.js foundation.",
+                    status="completed",
+                    priority="medium",
+                    estimated_hours=8.0,
+                    order_index=0
+                )
+                session.add_all([t_backlog, t_todo, t_in_progress, t_review, t_completed])
+                await session.flush()
+
+                # Add Comments on in_progress task
+                session.add(TaskComment(
+                    task_id=t_in_progress.id,
+                    user_id=demo_user.id,
+                    content="Benchmarking shows 42ms per inference on INT8 with negligible accuracy loss!"
+                ))
+
+                # Seed Chat Messages
+                session.add(Message(
+                    project_id=demo_project.id,
+                    user_id=demo_user.id,
+                    content="Hey team! Just pushed the INT8 quantized model checkpoint. Let me know when Flutter testing is ready.",
+                    mentions=[],
+                    is_pinned=True
+                ))
+                if len(created_users) >= 2:
+                    session.add(Message(
+                        project_id=demo_project.id,
+                        user_id=created_users[1].id,
+                        content="@alexchen Looks fantastic! The camera viewfinder layout is almost complete. Running tests now.",
+                        mentions=["alexchen"],
+                        is_pinned=False
+                    ))
+
+                # Seed Notifications for Alex Chen
+                session.add(Notification(
+                    user_id=demo_user.id,
+                    actor_id=created_users[1].id if len(created_users) >= 2 else None,
+                    title="New Comment on Task",
+                    message="Your teammate commented on 'INT8 Quantization & latency benchmarking'.",
+                    type="mention",
+                    link=f"/projects/{demo_project.id}/workspace?tab=tasks",
+                    is_read=False
+                ))
+                session.add(Notification(
+                    user_id=demo_user.id,
+                    actor_id=created_users[3].id if len(created_users) >= 4 else None,
+                    title="New Join Request",
+                    message=f"{created_users[3].full_name if len(created_users) >= 4 else 'A student'} applied to join AgriVision.",
+                    type="join_request",
+                    link=f"/projects/{demo_project.id}/workspace?tab=team",
+                    is_read=False
+                ))
+
+                # Seed Activity Log
+                session.add(ActivityLog(
+                    project_id=demo_project.id,
+                    user_id=demo_user.id,
+                    action="task_moved",
+                    entity_type="task",
+                    entity_id=str(t_in_progress.id),
+                    description="Alex Chen moved 'INT8 Quantization' to [IN_PROGRESS]."
+                ))
+                session.add(ActivityLog(
+                    project_id=demo_project.id,
+                    user_id=demo_user.id,
+                    action="milestone_completed",
+                    entity_type="milestone",
+                    entity_id=str(m1.id),
+                    description="Completed Phase 1: Dataset Pipeline & Baseline Training."
+                ))
+
+                await session.commit()
+                print("✅ Phase 2 Team Workspace, Kanban Tasks, and Chat seeded successfully!")
+
+    print("🎉 Database seeding complete! Ready for Phase 2 testing.")
 
 
 if __name__ == "__main__":
