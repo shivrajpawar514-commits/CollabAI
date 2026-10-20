@@ -5,11 +5,33 @@ from app.schemas.project import (
     ProjectBase, ProjectCreate, ProjectUpdate, ProjectResponse, ProjectListResponse,
     ProjectRoleCreate, ProjectRoleResponse, ProjectSkillCreate, ProjectSkillResponse
 )
+from app.schemas.team import (
+    TeamBase, TeamResponse, TeamMemberBase, TeamMemberAdd, TeamMemberResponse,
+    InvitationCreate, JoinRequestCreate, InvitationUpdate, InvitationResponse
+)
+from app.schemas.task import (
+    MilestoneBase, MilestoneCreate, MilestoneUpdate, MilestoneResponse,
+    TaskBase, TaskCreate, TaskUpdate, TaskMove, TaskResponse, TaskDetailResponse,
+    TaskCommentBase, TaskCommentCreate, TaskCommentResponse, TaskDependencyResponse
+)
+from app.schemas.chat import (
+    MessageCreate, MessageResponse, FileAttachmentResponse
+)
+from app.schemas.notification import (
+    NotificationResponse, ActivityLogResponse
+)
 
 __all__ = [
     "UserBase", "UserCreate", "UserLogin", "UserResponse", "Token", "TokenPayload",
     "ProfileBase", "ProfileCreate", "ProfileUpdate", "ProfileResponse", "StudentProfileDetail",
     "SkillBase", "SkillCreate", "SkillResponse", "UserSkillCreate", "UserSkillUpdate", "UserSkillResponse",
     "ProjectBase", "ProjectCreate", "ProjectUpdate", "ProjectResponse", "ProjectListResponse",
-    "ProjectRoleCreate", "ProjectRoleResponse", "ProjectSkillCreate", "ProjectSkillResponse"
+    "ProjectRoleCreate", "ProjectRoleResponse", "ProjectSkillCreate", "ProjectSkillResponse",
+    "TeamBase", "TeamResponse", "TeamMemberBase", "TeamMemberAdd", "TeamMemberResponse",
+    "InvitationCreate", "JoinRequestCreate", "InvitationUpdate", "InvitationResponse",
+    "MilestoneBase", "MilestoneCreate", "MilestoneUpdate", "MilestoneResponse",
+    "TaskBase", "TaskCreate", "TaskUpdate", "TaskMove", "TaskResponse", "TaskDetailResponse",
+    "TaskCommentBase", "TaskCommentCreate", "TaskCommentResponse", "TaskDependencyResponse",
+    "MessageCreate", "MessageResponse", "FileAttachmentResponse",
+    "NotificationResponse", "ActivityLogResponse"
 ]

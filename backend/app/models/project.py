@@ -10,6 +10,10 @@ from app.core.db import Base
 if TYPE_CHECKING:
     from app.models.user import User
     from app.models.skill import Skill
+    from app.models.team import Team
+    from app.models.task import Milestone, Task
+    from app.models.chat import Message, FileAttachment
+    from app.models.notification import ActivityLog
 
 
 class Project(Base):
@@ -52,6 +56,12 @@ class Project(Base):
     owner: Mapped["User"] = relationship("User", back_populates="owned_projects", lazy="joined")
     required_skills: Mapped[List["ProjectSkill"]] = relationship("ProjectSkill", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
     roles: Mapped[List["ProjectRole"]] = relationship("ProjectRole", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    team: Mapped[Optional["Team"]] = relationship("Team", back_populates="project", uselist=False, cascade="all, delete-orphan", lazy="selectin")
+    milestones: Mapped[List["Milestone"]] = relationship("Milestone", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    tasks: Mapped[List["Task"]] = relationship("Task", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    messages: Mapped[List["Message"]] = relationship("Message", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    files: Mapped[List["FileAttachment"]] = relationship("FileAttachment", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    activities: Mapped[List["ActivityLog"]] = relationship("ActivityLog", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
 
 
 class ProjectSkill(Base):

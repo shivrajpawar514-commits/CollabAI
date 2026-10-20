@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from app.models.profile import Profile
     from app.models.skill import UserSkill
     from app.models.project import Project
+    from app.models.notification import Notification
 
 
 class User(Base):
@@ -45,3 +46,4 @@ class User(Base):
     profile: Mapped[Optional["Profile"]] = relationship("Profile", back_populates="user", uselist=False, cascade="all, delete-orphan", lazy="selectin")
     skills: Mapped[List["UserSkill"]] = relationship("UserSkill", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
     owned_projects: Mapped[List["Project"]] = relationship("Project", back_populates="owner", cascade="all, delete-orphan", lazy="selectin")
+    notifications: Mapped[List["Notification"]] = relationship("Notification", foreign_keys="Notification.user_id", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
