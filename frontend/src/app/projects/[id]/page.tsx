@@ -95,18 +95,28 @@ export default function ProjectDetailPage() {
           </p>
         </div>
 
-        {project.repo_url && (
-          <a
-            href={project.repo_url}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white text-xs font-semibold transition-all shrink-0"
+        <div className="flex items-center gap-3 shrink-0">
+          <Link
+            href={`/projects/${project.id}/workspace`}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white text-xs font-bold shadow-md shadow-indigo-600/30 transition-all"
           >
-            <Code2 className="w-4 h-4" />
-            Repository
-            <ExternalLink className="w-3 h-3 text-slate-400" />
-          </a>
-        )}
+            <Sparkles className="w-4 h-4 text-cyan-300" />
+            Open Team Workspace
+          </Link>
+
+          {project.repo_url && (
+            <a
+              href={project.repo_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white text-xs font-semibold transition-all shrink-0"
+            >
+              <Code2 className="w-4 h-4" />
+              Repository
+              <ExternalLink className="w-3 h-3 text-slate-400" />
+            </a>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
