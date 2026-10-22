@@ -24,6 +24,10 @@ from ai.prompts.copilot import (
     SYSTEM_COPILOT_PROMPT,
     format_copilot_context_prompt,
 )
+from ai.prompts.rag_assistant import (
+    SYSTEM_RAG_RESEARCH_PROMPT,
+    format_rag_prompt,
+)
 
 __all__ = [
     "ProjectProposal",
@@ -44,4 +48,7 @@ __all__ = [
     "ActionSuggestion",
     "SYSTEM_COPILOT_PROMPT",
     "format_copilot_context_prompt",
+    "SYSTEM_RAG_RESEARCH_PROMPT",
+    "format_rag_prompt",
 ]
+
