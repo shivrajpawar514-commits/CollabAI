@@ -6,6 +6,7 @@ from app.models.team import Team, TeamMember, Invitation
 from app.models.task import Milestone, Task, TaskDependency, TaskComment
 from app.models.chat import Message, FileAttachment
 from app.models.notification import Notification, ActivityLog
+from app.models.rag import Document, DocumentChunk, VectorType
 
 __all__ = [
     "User",
@@ -26,4 +27,8 @@ __all__ = [
     "FileAttachment",
     "Notification",
     "ActivityLog",
+    "Document",
+    "DocumentChunk",
+    "VectorType",
 ]
+

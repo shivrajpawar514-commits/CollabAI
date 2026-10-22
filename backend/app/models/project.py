@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from app.models.task import Milestone, Task
     from app.models.chat import Message, FileAttachment
     from app.models.notification import ActivityLog
+    from app.models.rag import Document, DocumentChunk
 
 
 class Project(Base):
@@ -62,6 +63,9 @@ class Project(Base):
     messages: Mapped[List["Message"]] = relationship("Message", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
     files: Mapped[List["FileAttachment"]] = relationship("FileAttachment", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
     activities: Mapped[List["ActivityLog"]] = relationship("ActivityLog", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    documents: Mapped[List["Document"]] = relationship("Document", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+    chunks: Mapped[List["DocumentChunk"]] = relationship("DocumentChunk", back_populates="project", cascade="all, delete-orphan", lazy="selectin")
+
 
 
 class ProjectSkill(Base):
