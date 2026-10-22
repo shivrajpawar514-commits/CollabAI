@@ -12,7 +12,7 @@ import {
   CheckCircle,
   FolderPlus,
 } from "lucide-react";
-import { api, getAuthToken } from "@/lib/api";
+import { api, getAuthToken, ProjectProposal } from "@/lib/api";
 
 export default function CreateProjectPage() {
   const router = useRouter();
@@ -20,6 +20,7 @@ export default function CreateProjectPage() {
   // AI Generator state
   const [ideaPrompt, setIdeaPrompt] = useState("");
   const [isAiGenerating, setIsAiGenerating] = useState(false);
+  const [aiProposal, setAiProposal] = useState<ProjectProposal | null>(null);
 
   // Form state
   const [title, setTitle] = useState("");
@@ -40,24 +41,32 @@ export default function CreateProjectPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleAiAutoFill = () => {
+  const handleAiAutoFill = async () => {
     if (!ideaPrompt.trim()) return;
     setIsAiGenerating(true);
+    setError(null);
 
-    setTimeout(() => {
-      setTitle("NeuroSync: Generative Audio for Focus & ADHD");
-      setDescription("An intelligent biofeedback audio synthesis system generating real-time binaural beats and acoustic soundscapes tuned to user work sessions and focus cycles.");
-      setProblemStatement("Students and knowledge workers face frequent cognitive fatigue and ADHD distraction without non-pharmacological, personalized auditory stimulation.");
-      setMaxTeamSize(4);
-      setRoles([
-        { role_name: "Audio DSP Engineer", capacity: 1 },
-        { role_name: "Fullstack React Developer", capacity: 1 },
-        { role_name: "ML Audio Researcher", capacity: 1 },
-      ]);
-      setSelectedSkills(["Python", "PyTorch", "TypeScript", "React", "Docker"]);
+    try {
+      const res = await api.generateProject(ideaPrompt);
+      setAiProposal(res);
+      setTitle(res.title);
+      setProblemStatement(res.problem_statement);
+      const desc = `${res.architecture}\n\nObjectives:\n- ` + res.objectives.join("\n- ");
+      setDescription(desc);
+      setMaxTeamSize(Math.max(3, res.roles_needed?.length || 4));
+      if (res.roles_needed?.length) {
+        setRoles(res.roles_needed.map((r) => ({ role_name: r.role_name, capacity: r.capacity || 1 })));
+      }
+      if (res.technologies?.length) {
+        setSelectedSkills(res.technologies);
+      }
+    } catch (err: any) {
+      setError(err.message || "AI Proposal generation failed. Please try again.");
+    } finally {
       setIsAiGenerating(false);
-    }, 1000);
+    }
   };
+
 
   const handleAddRole = () => {
     setRoles([...roles, { role_name: "", capacity: 1 }]);
@@ -150,7 +159,54 @@ export default function CreateProjectPage() {
             Auto-Fill Form
           </button>
         </div>
+
+        {aiProposal && (
+          <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/30 space-y-3 animate-in fade-in duration-300">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                <CheckCircle className="w-3.5 h-3.5 text-cyan-400" />
+                AI Proposal Outline Generated
+              </span>
+              <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-semibold">
+                Form Pre-filled Below
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div className="p-2.5 rounded-lg bg-black/40 border border-white/5 space-y-1">
+                <span className="text-slate-400 font-semibold block text-[11px]">Architecture:</span>
+                <p className="text-slate-200 line-clamp-3">{aiProposal.architecture}</p>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-black/40 border border-white/5 space-y-1">
+                <span className="text-slate-400 font-semibold block text-[11px]">Recommended Tech Stack:</span>
+                <div className="flex flex-wrap gap-1">
+                  {aiProposal.technologies.map((t, idx) => (
+                    <span key={idx} className="px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[10px]">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {aiProposal.timeline_weeks?.length > 0 && (
+              <div className="pt-2 border-t border-white/5">
+                <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">Roadmap Phases ({aiProposal.timeline_weeks.length} Weeks):</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {aiProposal.timeline_weeks.slice(0, 3).map((w, idx) => (
+                    <div key={idx} className="p-2 rounded bg-black/30 border border-white/5 text-[10px]">
+                      <span className="text-cyan-400 font-bold block">{w.title}</span>
+                      <span className="text-slate-400 line-clamp-1">{w.deliverables?.join(", ")}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
 
       {error && (
         <div className="p-4 rounded-xl bg-red-500/15 border border-red-500/30 text-red-200 text-xs">

@@ -27,6 +27,8 @@ import {
   ChevronLeft,
   Pin,
   MessageCircle,
+  Zap,
+  Bot,
 } from "lucide-react";
 import {
   api,
@@ -41,6 +43,10 @@ import {
   User,
   getAuthToken,
 } from "@/lib/api";
+import DecomposeModal from "./components/DecomposeModal";
+import AiPlannerModal from "./components/AiPlannerModal";
+import TeammateMatchModal from "./components/TeammateMatchModal";
+import CopilotTab from "./components/CopilotTab";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -57,12 +63,20 @@ function ProjectWorkspaceContent() {
   const projectId = params?.id as string;
   const initialTab = (searchParams.get("tab") as any) || "kanban";
 
-  const [activeTab, setActiveTab] = useState<"kanban" | "chat" | "team" | "milestones" | "files" | "activity">(initialTab);
+  const [activeTab, setActiveTab] = useState<
+    "kanban" | "chat" | "copilot" | "team" | "milestones" | "files" | "activity"
+  >(initialTab);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [project, setProject] = useState<Project | null>(null);
   const [team, setTeam] = useState<Team | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
+
+  // Phase 3 AI State
+  const [decomposingTask, setDecomposingTask] = useState<Task | null>(null);
+  const [showAiPlannerModal, setShowAiPlannerModal] = useState(false);
+  const [showTeammateMatchModal, setShowTeammateMatchModal] = useState(false);
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [files, setFiles] = useState<FileAttachment[]>([]);
   const [activities, setActivities] = useState<ActivityLog[]>([]);
@@ -354,11 +368,13 @@ function ProjectWorkspaceContent() {
         {[
           { id: "kanban", name: "Kanban Board", icon: Kanban, count: tasks.length },
           { id: "chat", name: "Team Chat", icon: MessageSquare, count: messages.length },
+          { id: "copilot", name: "AI Copilot", icon: Sparkles },
           { id: "team", name: "Team & Invites", icon: Users, count: team?.members.length },
           { id: "milestones", name: "Roadmap", icon: Target, count: milestones.length },
           { id: "files", name: "Files & Assets", icon: FolderArchive, count: files.length },
           { id: "activity", name: "Activity Log", icon: Activity, count: activities.length },
         ].map((tab) => {
+
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
@@ -462,12 +478,20 @@ function ProjectWorkspaceContent() {
                               </span>
                             </div>
 
-                            {/* Column shifting buttons */}
+                            {/* Column shifting & AI buttons */}
                             <div
                               className="flex items-center gap-1"
                               onClick={(e) => e.stopPropagation()}
                             >
+                              <button
+                                onClick={() => setDecomposingTask(task)}
+                                className="p-1 rounded bg-indigo-500/15 hover:bg-indigo-500/30 text-indigo-300 hover:text-white"
+                                title="Decompose with AI"
+                              >
+                                <Zap className="w-3 h-3 text-cyan-300" />
+                              </button>
                               {col.id !== "backlog" && (
+
                                 <button
                                   onClick={() => handleMoveTask(task, "prev")}
                                   className="p-1 rounded bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white"
@@ -597,7 +621,21 @@ function ProjectWorkspaceContent() {
         </div>
       )}
 
+      {/* TAB: AI COPILOT */}
+      {activeTab === "copilot" && (
+        <CopilotTab
+          project={project}
+          tasks={tasks}
+          milestones={milestones}
+          team={team}
+          onTaskCreated={(newTask) => setTasks((prev) => [...prev, newTask])}
+          onOpenTeammateMatch={() => setShowTeammateMatchModal(true)}
+          onOpenAiPlanner={() => setShowAiPlannerModal(true)}
+        />
+      )}
+
       {/* TAB 3: TEAM & INVITATIONS */}
+
       {activeTab === "team" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-6">
@@ -697,12 +735,21 @@ function ProjectWorkspaceContent() {
             <p className="text-xs text-slate-300 leading-relaxed">
               Find students with missing skills (e.g. Flutter, PyTorch) from the discovery catalog and invite them.
             </p>
-            <button
-              onClick={() => router.push(`/projects?tab=teammates`)}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-95 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/25"
-            >
-              Browse Teammate Recommendations
-            </button>
+            <div className="space-y-2">
+              <button
+                onClick={() => setShowTeammateMatchModal(true)}
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/25"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+                AI Match Teammates
+              </button>
+              <button
+                onClick={() => router.push(`/projects?tab=teammates`)}
+                className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all border border-white/10"
+              >
+                Browse Public Discovery
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -714,8 +761,18 @@ function ProjectWorkspaceContent() {
           <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-3">
             <div className="flex items-center justify-between text-xs font-semibold">
               <span className="text-slate-300">Milestone & Delivery Progress</span>
-              <span className="text-cyan-400 font-bold">{progressPct}% Complete ({completedCount}/{tasks.length} Tasks)</span>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowAiPlannerModal(true)}
+                  className="px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-600 to-indigo-600 hover:opacity-95 text-white font-bold text-[11px] flex items-center gap-1 shadow-md shadow-cyan-600/20"
+                >
+                  <Sparkles className="w-3 h-3 text-cyan-200" />
+                  Plan with AI
+                </button>
+                <span className="text-cyan-400 font-bold">{progressPct}% Complete ({completedCount}/{tasks.length} Tasks)</span>
+              </div>
             </div>
+
             <div className="w-full bg-black/40 h-2.5 rounded-full overflow-hidden border border-white/10">
               <div
                 className="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full transition-all duration-500"
@@ -958,9 +1015,23 @@ function ProjectWorkspaceContent() {
           <div className="glass-panel p-6 rounded-2xl border border-white/15 w-full max-w-xl space-y-4 bg-[#0d101d] max-h-[85vh] overflow-y-auto">
             <div className="flex items-start justify-between gap-4 pb-3 border-b border-white/10">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                  {selectedTaskDetail.status} • {selectedTaskDetail.priority}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                    {selectedTaskDetail.status} • {selectedTaskDetail.priority}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const t = selectedTaskDetail;
+                      setSelectedTaskDetail(null);
+                      setDecomposingTask(t);
+                    }}
+                    className="px-2.5 py-0.5 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/35 border border-indigo-500/40 text-cyan-300 font-semibold text-[10px] flex items-center gap-1 transition-all"
+                  >
+                    <Zap className="w-3 h-3 text-cyan-400" />
+                    Decompose with AI
+                  </button>
+                </div>
                 <h3 className="font-bold text-white text-base mt-2">{selectedTaskDetail.title}</h3>
               </div>
               <button
@@ -969,6 +1040,7 @@ function ProjectWorkspaceContent() {
               >
                 <X className="w-5 h-5" />
               </button>
+
             </div>
 
             {selectedTaskDetail.description && (
@@ -1067,7 +1139,42 @@ function ProjectWorkspaceContent() {
           </div>
         </div>
       )}
+
+      {/* MODAL: SMART TASK DECOMPOSITION */}
+      {decomposingTask && (
+        <DecomposeModal
+          task={decomposingTask}
+          onClose={() => setDecomposingTask(null)}
+          onApplied={(newTasks) => setTasks((prev) => [...prev, ...newTasks])}
+        />
+      )}
+
+      {/* MODAL: AI MILESTONE PLANNER */}
+      {showAiPlannerModal && project && (
+        <AiPlannerModal
+          projectId={projectId}
+          projectTitle={project.title}
+          onClose={() => setShowAiPlannerModal(false)}
+          onApplied={() => {
+            api.getMilestones(projectId).then(setMilestones);
+            api.getTasks(projectId).then(setTasks);
+          }}
+        />
+      )}
+
+      {/* MODAL: AI TEAMMATE RECOMMENDER */}
+      {showTeammateMatchModal && project && (
+        <TeammateMatchModal
+          projectId={projectId}
+          projectTitle={project.title}
+          onClose={() => setShowTeammateMatchModal(false)}
+          onInvited={() => {
+            api.listProjectInvitations(projectId).then(setInvitations);
+          }}
+        />
+      )}
     </div>
+
   );
 }
 
