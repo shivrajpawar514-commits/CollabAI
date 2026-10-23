@@ -324,7 +324,68 @@ export interface TeammateRecommendationResponse {
   total_analyzed: number;
 }
 
+// Phase 4 Types: Document & RAG Knowledge Vault
+export interface DocumentItem {
+  id: string;
+  project_id: string;
+  uploader_id: string;
+  title: string;
+  file_name: string;
+  file_url: string;
+  file_type: string;
+  file_size_bytes: number;
+  total_pages: number;
+  total_chunks: number;
+  status: "pending" | "processing" | "indexed" | "failed";
+  error_message?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DocumentChunkItem {
+  id: string;
+  document_id: string;
+  project_id: string;
+  chunk_index: number;
+  content: string;
+  page_number: number;
+  token_count: number;
+  metadata_json?: Record<string, any>;
+  created_at: string;
+}
+
+export interface CitationItem {
+  index: number;
+  document_id: string;
+  document_title: string;
+  page_number: number;
+  chunk_id: string;
+  snippet: string;
+  score: number;
+}
+
+export interface RAGQueryRequest {
+  query: string;
+  top_k?: number;
+  document_ids?: string[];
+  stream?: boolean;
+}
+
+export interface RAGQueryResponse {
+  query: string;
+  answer: string;
+  groundedness_score: number;
+  citations: CitationItem[];
+  retrieved_chunks: DocumentChunkItem[];
+}
+
+export interface DocumentUploadResponse {
+  document: DocumentItem;
+  message: string;
+}
+
 export function getAuthToken(): string | null {
+
   if (typeof window === "undefined") return null;
   return localStorage.getItem("collabai_access_token");
 }
@@ -547,5 +608,37 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ project_id: projectId, message, chat_history: chatHistory }),
     }),
+
+  // Phase 4: RAG Knowledge Vault & Research
+  uploadDocument: (projectId: string, file: File, title?: string) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    if (title) formData.append("title", title);
+    return request<DocumentUploadResponse>(`/projects/${projectId}/documents/upload`, {
+      method: "POST",
+      body: formData,
+    });
+  },
+
+  getProjectDocuments: (projectId: string) =>
+    request<DocumentItem[]>(`/projects/${projectId}/documents`),
+
+  getDocument: (projectId: string, docId: string) =>
+    request<DocumentItem>(`/projects/${projectId}/documents/${docId}`),
+
+  getDocumentChunks: (projectId: string, docId: string) =>
+    request<DocumentChunkItem[]>(`/projects/${projectId}/documents/${docId}/chunks`),
+
+  deleteDocument: (projectId: string, docId: string) =>
+    request<void>(`/projects/${projectId}/documents/${docId}`, {
+      method: "DELETE",
+    }),
+
+  queryRAG: (projectId: string, data: RAGQueryRequest) =>
+    request<RAGQueryResponse>(`/projects/${projectId}/rag/query`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 };
+
 
