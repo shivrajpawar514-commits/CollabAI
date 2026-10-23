@@ -29,6 +29,11 @@ from app.schemas.rag import (
     DocumentBase, DocumentResponse, DocumentChunkResponse,
     CitationItem, RAGQueryRequest, RAGQueryResponse, DocumentUploadResponse
 )
+from app.schemas.ml import (
+    RecommendationFeedbackCreate, RecommendationFeedbackResponse,
+    TeammateMatchV2Response, DeadlineRiskReport, SkillGapAnalysis,
+    LearningStep, FreeResource
+)
 
 __all__ = [
     "UserBase", "UserCreate", "UserLogin", "UserResponse", "Token", "TokenPayload",
@@ -47,7 +52,11 @@ __all__ = [
     "DecomposeTaskRequest", "ApplyDecompositionRequest", "CopilotChatRequest",
     "TeammateRecommendationResponse",
     "DocumentBase", "DocumentResponse", "DocumentChunkResponse",
-    "CitationItem", "RAGQueryRequest", "RAGQueryResponse", "DocumentUploadResponse"
+    "CitationItem", "RAGQueryRequest", "RAGQueryResponse", "DocumentUploadResponse",
+    "RecommendationFeedbackCreate", "RecommendationFeedbackResponse",
+    "TeammateMatchV2Response", "DeadlineRiskReport", "SkillGapAnalysis",
+    "LearningStep", "FreeResource"
 ]
+
 
 
