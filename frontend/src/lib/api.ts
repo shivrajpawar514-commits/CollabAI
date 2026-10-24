@@ -384,7 +384,106 @@ export interface DocumentUploadResponse {
   message: string;
 }
 
+// Phase 5 Types: ML Intelligence, Matching v2/v3, Deadline Risk, Skill Graph
+export interface CandidateMatchV2 {
+  user_id: string;
+  name: string;
+  email: string;
+  avatar_url?: string;
+  college?: string;
+  branch?: string;
+  year?: string;
+  match_score: number;
+  ml_rank_score: number;
+  acceptance_probability: number;
+  skill_complementarity: number;
+  interest_similarity: number;
+  availability_score: number;
+  experience_score: number;
+  role_compatibility: number;
+  past_collab_score: number;
+  covered_gap_skills: string[];
+  missing_project_skills: string[];
+  preferred_roles: string[];
+  availability_hours: number;
+  feature_importance: Record<string, number>;
+  explanation: string;
+}
+
+export interface TeammateMatchV2Response {
+  project_id: string;
+  project_title: string;
+  recommendations: CandidateMatchV2[];
+  total_analyzed: number;
+}
+
+export interface DeadlineRiskReport {
+  project_id: string;
+  risk_score: number;
+  risk_level: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  completion_rate: number;
+  remaining_tasks: number;
+  total_tasks: number;
+  blocked_tasks: number;
+  days_left: number;
+  team_size: number;
+  current_velocity_per_week: number;
+  required_velocity_per_week: number;
+  projected_delay_days: number;
+  bottlenecks: string[];
+  mitigation_suggestions: string[];
+  feature_importance: Record<string, number>;
+}
+
+export interface FreeResource {
+  title: string;
+  url: string;
+  provider: string;
+  type: string;
+}
+
+export interface LearningStep {
+  step_number: number;
+  skill_name: string;
+  category: string;
+  difficulty: string;
+  estimated_hours: number;
+  is_direct_requirement: boolean;
+  prerequisites: string[];
+  free_resources: FreeResource[];
+}
+
+export interface SkillGapAnalysis {
+  project_id: string;
+  required_skills: string[];
+  team_owned_skills: string[];
+  missing_skills: string[];
+  coverage_percentage: number;
+  total_learning_hours: number;
+  recommended_learning_path: LearningStep[];
+}
+
+export interface RecommendationFeedbackCreate {
+  candidate_id: string;
+  action: "accepted" | "invited" | "dismissed" | "viewed";
+  match_score: number;
+  ml_rank_score: number;
+  feature_vector_json?: Record<string, any>;
+}
+
+export interface RecommendationFeedbackResponse {
+  id: string;
+  project_id: string;
+  reviewer_id: string;
+  candidate_id: string;
+  action: string;
+  match_score: number;
+  ml_rank_score: number;
+  created_at: string;
+}
+
 export function getAuthToken(): string | null {
+
 
   if (typeof window === "undefined") return null;
   return localStorage.getItem("collabai_access_token");
@@ -639,6 +738,23 @@ export const api = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+
+  // Phase 5: ML Intelligence, Matching v2/v3, Deadline Risk, Skill Graph
+  getTeammateRecommendationsV2: (projectId: string) =>
+    request<TeammateMatchV2Response>(`/projects/${projectId}/intelligence/teammates`),
+
+  getDeadlineRisk: (projectId: string) =>
+    request<DeadlineRiskReport>(`/projects/${projectId}/intelligence/deadline-risk`),
+
+  getSkillGap: (projectId: string) =>
+    request<SkillGapAnalysis>(`/projects/${projectId}/intelligence/skill-gap`),
+
+  logRecommendationFeedback: (projectId: string, data: RecommendationFeedbackCreate) =>
+    request<RecommendationFeedbackResponse>(`/projects/${projectId}/intelligence/feedback`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 };
+
 
 
