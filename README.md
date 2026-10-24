@@ -188,5 +188,6 @@ proposal = await client.generate_structured(
 - [x] **Phase 4 (Weeks 8–9):** Project-specific RAG with PyMuPDF chunking, `bge-small` embeddings in pgvector, Hybrid Search, and Citations.
 - [x] **Phase 5 (Weeks 10–12):** Matching Algorithm v2 & XGBoost synthetic ranking, Deadline Risk predictor, NetworkX Skill Graph. See [ml/EVALUATION_REPORT.md](ml/EVALUATION_REPORT.md) for full metrics.
 - [ ] **Phase 6 (Weeks 13–14):** GitHub App Integration, PR cycle time analytics, Prometheus + Grafana monitoring.
-- [ ] **Phase 7 (Weeks 15–17):** Faster-Whisper Meeting-to-Tasks assistant, Project Knowledge Graph, Multi-Agent LangGraph Orchestrator.
+- [x] **Phase 7 (Weeks 15–17):** Faster-Whisper Meeting-to-Tasks assistant, Project Decision Memory Graph, Multi-Agent LangGraph Orchestrator, Code Assistant, and Readiness Auditor.
+
 
