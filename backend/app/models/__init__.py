@@ -8,6 +8,7 @@ from app.models.chat import Message, FileAttachment
 from app.models.notification import Notification, ActivityLog
 from app.models.rag import Document, DocumentChunk, VectorType
 from app.models.ml import RecommendationFeedback
+from app.models.advanced_ai import ProjectDecision, MeetingNote, MeetingActionItem
 
 __all__ = [
     "User",
@@ -32,6 +33,10 @@ __all__ = [
     "DocumentChunk",
     "VectorType",
     "RecommendationFeedback",
+    "ProjectDecision",
+    "MeetingNote",
+    "MeetingActionItem",
 ]
+
 
 

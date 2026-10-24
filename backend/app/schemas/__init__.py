@@ -34,6 +34,13 @@ from app.schemas.ml import (
     TeammateMatchV2Response, DeadlineRiskReport, SkillGapAnalysis,
     LearningStep, FreeResource
 )
+from app.schemas.advanced_ai import (
+    MeetingTranscriptRequest, MeetingActionItemResponse, MeetingNoteResponse,
+    ConvertActionItemsRequest, ConvertActionItemsResponse, DecisionCreate,
+    DecisionResponse, DecisionQueryRequest, DecisionQueryResponse,
+    OrchestratorRequest, OrchestratorResponse, CodeReviewRequest,
+    CodeReviewResponse, GenerateTestsRequest
+)
 
 __all__ = [
     "UserBase", "UserCreate", "UserLogin", "UserResponse", "Token", "TokenPayload",
@@ -55,8 +62,14 @@ __all__ = [
     "CitationItem", "RAGQueryRequest", "RAGQueryResponse", "DocumentUploadResponse",
     "RecommendationFeedbackCreate", "RecommendationFeedbackResponse",
     "TeammateMatchV2Response", "DeadlineRiskReport", "SkillGapAnalysis",
-    "LearningStep", "FreeResource"
+    "LearningStep", "FreeResource",
+    "MeetingTranscriptRequest", "MeetingActionItemResponse", "MeetingNoteResponse",
+    "ConvertActionItemsRequest", "ConvertActionItemsResponse", "DecisionCreate",
+    "DecisionResponse", "DecisionQueryRequest", "DecisionQueryResponse",
+    "OrchestratorRequest", "OrchestratorResponse", "CodeReviewRequest",
+    "CodeReviewResponse", "GenerateTestsRequest"
 ]
+
 
 
 
