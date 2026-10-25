@@ -45,9 +45,8 @@ body {
 /* Ambient Radial Glow */
 .bg-ambient-glow {
   background: 
-    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 85% 25%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 50% 85%, rgba(168, 85, 247, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 25%, rgba(6, 182, 212, 0.06) 0%, transparent 40%),
     hsl(var(--background));
 }
 
@@ -64,14 +63,14 @@ body {
 }
 .glass-panel-hover:hover {
   background: rgba(24, 29, 48, 0.85);
-  border-color: rgba(99, 102, 241, 0.35);
+  border-color: rgba(59, 130, 246, 0.35);
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 12px 30px -10px rgba(59, 130, 246, 0.2);
 }
 
-/* Shimmer & Gradients */
+/* Shimmer & Gradients (Clean Technical Blue & Cyan) */
 .text-gradient {
-  background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #38bdf8 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #38bdf8 50%, #2dd4bf 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

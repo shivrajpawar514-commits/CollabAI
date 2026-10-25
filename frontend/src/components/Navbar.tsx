@@ -13,6 +13,7 @@ import {
   Bell,
   Check,
   ExternalLink,
+  Code2,
 } from "lucide-react";
 import { getAuthToken, clearAuthTokens, api, User, Notification } from "@/lib/api";
 
@@ -97,9 +98,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-400 p-[1.5px] shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 p-[1.5px] shadow-md shadow-blue-500/20 group-hover:shadow-blue-500/30 transition-all">
             <div className="w-full h-full bg-[#0d101d] rounded-[10px] flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-cyan-400" />
+              <Code2 className="w-5 h-5 text-cyan-400" />
             </div>
           </div>
           <div className="flex flex-col">
@@ -113,7 +114,7 @@ export default function Navbar() {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] p-1.5 rounded-full backdrop-blur-md">
+        <nav className="hidden md:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] p-1.5 rounded-xl backdrop-blur-md">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -121,9 +122,9 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-full transition-all ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 text-sm font-medium rounded-lg transition-all ${
                   isActive
-                    ? "bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 shadow-sm"
+                    ? "bg-blue-600/20 text-blue-300 border border-blue-500/30 shadow-sm"
                     : "text-slate-300 hover:text-white hover:bg-white/[0.06]"
                 }`}
               >
@@ -147,7 +148,7 @@ export default function Navbar() {
                 >
                   <Bell className="w-4 h-4" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-cyan-500 text-black text-[10px] font-extrabold flex items-center justify-center animate-pulse">
+                    <span className="absolute top-1 right-1 w-4 h-4 rounded-md bg-cyan-500 text-black text-[10px] font-extrabold flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
@@ -232,7 +233,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/auth/login?tab=register"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-lg shadow-md shadow-indigo-500/25 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-sm shadow-blue-900/30 transition-all"
               >
                 Get Started
               </Link>

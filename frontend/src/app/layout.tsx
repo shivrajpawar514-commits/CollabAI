@@ -4,8 +4,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "CollabAI — AI-Native Student Project Collaboration Platform",
-  description: "Find teammates with complementary skills, generate actionable engineering plans with AI, and collaborate in real-time.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://collabai.dev"),
+  title: "CollabAI: Student Engineering & Project Collaboration Platform",
+  description: "Form capstone teams by skill complementarity, structure engineering roadmaps, and track repository deliverables.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

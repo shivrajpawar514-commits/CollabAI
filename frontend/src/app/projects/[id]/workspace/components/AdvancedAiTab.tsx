@@ -351,13 +351,13 @@ export default function AdvancedAiTab({
   return (
     <div className="space-y-6">
       {/* Top Banner / Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-900/40 via-indigo-900/30 to-blue-900/40 border border-purple-500/20 p-6 shadow-xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950/30 via-slate-900/40 to-slate-900/40 border border-blue-500/20 p-6 shadow-xl">
+        
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                <Bot className="w-5 h-5 text-purple-400" />
+              <span className="p-1.5 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                <Bot className="w-5 h-5 text-blue-400" />
               </span>
               <h2 className="text-xl font-bold text-white tracking-tight">
                 Autonomous AI Lab & Decision Memory
@@ -375,9 +375,9 @@ export default function AdvancedAiTab({
                 setActiveSection("code_audit");
                 handleRunAudit();
               }}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-lg shadow-purple-600/30 transition-all border border-purple-400/40"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-900/30 transition-all border border-blue-400/40"
             >
-              <Award className="w-4 h-4 text-purple-200" />
+              <Award className="w-4 h-4 text-blue-200" />
               Run Readiness Audit
             </button>
           </div>
@@ -399,7 +399,7 @@ export default function AdvancedAiTab({
                 onClick={() => setActiveSection(tab.id as any)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                   isActive
-                    ? "bg-purple-600 text-white shadow-md shadow-purple-600/30 border border-purple-400/50"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-900/30 border border-blue-400/50"
                     : "bg-white/[0.04] text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/[0.05]"
                 }`}
               >
@@ -419,7 +419,7 @@ export default function AdvancedAiTab({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Mic className="w-4 h-4 text-purple-400" /> Ingest Meeting / Voice Transcript
+                  <Mic className="w-4 h-4 text-blue-400" /> Ingest Meeting / Voice Transcript
                 </h3>
                 <p className="text-xs text-slate-400">
                   Drop in raw meeting notes, Whisper audio transcripts, or standup updates. CollabAI extracts
@@ -437,7 +437,7 @@ export default function AdvancedAiTab({
                       setMeetingTitleInput(sample.title);
                       setTranscriptText(sample.text);
                     }}
-                    className="px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-[11px] text-purple-300 border border-purple-500/20 transition-all"
+                    className="px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-[11px] text-blue-300 border border-blue-500/20 transition-all"
                   >
                     {idx === 0 ? "DB Architecture" : "Auth Standup"}
                   </button>
@@ -451,12 +451,12 @@ export default function AdvancedAiTab({
                 placeholder="Meeting Title (e.g. Sprint 2 Architectural Alignment)"
                 value={meetingTitleInput}
                 onChange={(e) => setMeetingTitleInput(e.target.value)}
-                className="col-span-1 md:col-span-2 px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                className="col-span-1 md:col-span-2 px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
               />
               <button
                 onClick={handleAnalyzeMeeting}
                 disabled={analyzingMeeting || !transcriptText.trim()}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
               >
                 {analyzingMeeting ? (
                   <>
@@ -464,7 +464,7 @@ export default function AdvancedAiTab({
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4 text-purple-200" /> Analyze & Extract Actions
+                    <Sparkles className="w-4 h-4 text-blue-200" /> Analyze & Extract Actions
                   </>
                 )}
               </button>
@@ -475,7 +475,7 @@ export default function AdvancedAiTab({
               placeholder="Paste raw meeting transcript, notes, or spoken conversation..."
               value={transcriptText}
               onChange={(e) => setTranscriptText(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500 placeholder-slate-500 leading-relaxed font-mono"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500 placeholder-slate-500 leading-relaxed font-mono"
             />
           </div>
 
@@ -489,9 +489,9 @@ export default function AdvancedAiTab({
 
           {/* Action Items Conversion Bar (if items selected) */}
           {selectedActionItemIds.length > 0 && (
-            <div className="p-4 rounded-xl bg-purple-950/40 border border-purple-500/30 flex flex-col md:flex-row items-center justify-between gap-3 animate-in fade-in duration-200">
+            <div className="p-4 rounded-xl bg-blue-950/40 border border-blue-500/30 flex flex-col md:flex-row items-center justify-between gap-3 animate-in fade-in duration-200">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-purple-500/30 text-purple-200 flex items-center justify-center text-xs font-bold">
+                <span className="w-6 h-6 rounded-md bg-blue-500/20 text-blue-200 flex items-center justify-center text-xs font-bold">
                   {selectedActionItemIds.length}
                 </span>
                 <span className="text-xs text-white font-medium">
@@ -532,12 +532,12 @@ export default function AdvancedAiTab({
           {/* Meetings List */}
           <div className="space-y-4">
             <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider flex items-center gap-2">
-              <Calendar className="w-3.5 h-3.5 text-purple-400" /> Past Meetings & Action Items ({meetings.length})
+              <Calendar className="w-3.5 h-3.5 text-blue-400" /> Past Meetings & Action Items ({meetings.length})
             </h4>
 
             {loadingMeetings ? (
               <div className="text-center py-12 text-slate-400">
-                <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-purple-400" />
+                <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-400" />
                 <p className="text-xs">Loading meeting records...</p>
               </div>
             ) : meetings.length === 0 ? (
@@ -555,7 +555,7 @@ export default function AdvancedAiTab({
                     <div>
                       <h4 className="text-sm font-bold text-white flex items-center gap-2">
                         {meeting.title}
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium">
+                        <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
                           {meeting.overall_sentiment}
                         </span>
                       </h4>
@@ -584,7 +584,7 @@ export default function AdvancedAiTab({
 
                   {/* Summary */}
                   <div className="p-3.5 rounded-xl bg-black/30 border border-white/5 text-xs text-slate-300 leading-relaxed">
-                    <span className="font-semibold text-purple-300 block mb-1">Executive Summary:</span>
+                    <span className="font-semibold text-blue-300 block mb-1">Executive Summary:</span>
                     {meeting.executive_summary}
                   </div>
 
@@ -606,7 +606,7 @@ export default function AdvancedAiTab({
                               isConverted
                                 ? "bg-emerald-950/20 border-emerald-500/20 opacity-80"
                                 : isSelected
-                                ? "bg-purple-900/20 border-purple-500/40"
+                                ? "bg-blue-900/20 border-blue-500/40"
                                 : "bg-white/[0.02] border-white/5 hover:border-white/10"
                             }`}
                           >
@@ -624,7 +624,7 @@ export default function AdvancedAiTab({
                                       );
                                     }
                                   }}
-                                  className="mt-1 rounded accent-purple-600 cursor-pointer"
+                                  className="mt-1 rounded accent-blue-600 cursor-pointer"
                                 />
                               ) : (
                                 <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
@@ -662,13 +662,13 @@ export default function AdvancedAiTab({
                               </span>
 
                               {isConverted ? (
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+                                <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
                                   Task Created
                                 </span>
                               ) : (
                                 <button
                                   onClick={() => handleConvertActionItems([item.id])}
-                                  className="px-2.5 py-1 rounded bg-purple-600/30 hover:bg-purple-600/50 text-[10px] font-bold text-purple-200 border border-purple-500/40 transition-all"
+                                  className="px-2.5 py-1 rounded bg-blue-600/30 hover:bg-blue-600/50 text-[10px] font-bold text-blue-200 border border-blue-500/40 transition-all"
                                 >
                                   Convert
                                 </button>
@@ -693,7 +693,7 @@ export default function AdvancedAiTab({
           <div className="glass-panel p-5 rounded-2xl border border-white/10 space-y-4 bg-[#0d111f]/70">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <BrainCircuit className="w-4 h-4 text-purple-400" /> Architectural Decision Knowledge Graph
+                <BrainCircuit className="w-4 h-4 text-blue-400" /> Architectural Decision Knowledge Graph
               </h3>
               <p className="text-xs text-slate-400">
                 Ask questions about past architectural trade-offs, technology choices, and design rationale.
@@ -710,13 +710,13 @@ export default function AdvancedAiTab({
                   value={decisionQuery}
                   onChange={(e) => setDecisionQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleQueryMemory()}
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                 />
               </div>
               <button
                 onClick={handleQueryMemory}
                 disabled={queryingMemory || !decisionQuery.trim()}
-                className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2"
+                className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2"
               >
                 {queryingMemory ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                 Query Memory
@@ -725,18 +725,18 @@ export default function AdvancedAiTab({
                 onClick={() => setShowAddDecision(!showAddDecision)}
                 className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white text-xs font-semibold transition-all flex items-center gap-1.5"
               >
-                <Plus className="w-4 h-4 text-purple-300" /> Record ADR
+                <Plus className="w-4 h-4 text-blue-300" /> Record ADR
               </button>
             </div>
 
             {/* Answer Display */}
             {memoryAnswer && (
-              <div className="p-4 rounded-xl bg-gradient-to-br from-purple-950/40 to-indigo-950/30 border border-purple-500/30 space-y-3 animate-in fade-in duration-200">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-blue-950/30 to-slate-900/30 border border-blue-500/20 space-y-3 animate-in fade-in duration-200">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-purple-400" /> Synthesized Rationale
+                  <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-blue-400" /> Synthesized Rationale
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-500/20 text-blue-300 border border-blue-500/30">
                     Confidence: {(memoryAnswer.confidence_score * 100).toFixed(0)}%
                   </span>
                 </div>
@@ -753,7 +753,7 @@ export default function AdvancedAiTab({
                         >
                           <div className="font-semibold text-white truncate">{d.what}</div>
                           <div className="text-slate-400 line-clamp-2">{d.why}</div>
-                          <div className="text-[10px] text-purple-300">
+                          <div className="text-[10px] text-blue-300">
                             By {d.who} • {d.when}
                           </div>
                         </div>
@@ -767,9 +767,9 @@ export default function AdvancedAiTab({
 
           {/* Record New ADR Modal / Panel */}
           {showAddDecision && (
-            <div className="glass-panel p-5 rounded-2xl border border-purple-500/30 space-y-4 bg-[#0e1222] animate-in fade-in duration-200">
+            <div className="glass-panel p-5 rounded-2xl border border-blue-500/30 space-y-4 bg-[#0e1222] animate-in fade-in duration-200">
               <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Plus className="w-3.5 h-3.5 text-purple-400" /> Record Architectural Decision Record (ADR)
+                <Plus className="w-3.5 h-3.5 text-blue-400" /> Record Architectural Decision Record (ADR)
               </h4>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -780,7 +780,7 @@ export default function AdvancedAiTab({
                     placeholder="e.g. Use pgvector on PostgreSQL for vector embeddings"
                     value={newDecisionWhat}
                     onChange={(e) => setNewDecisionWhat(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
@@ -791,7 +791,7 @@ export default function AdvancedAiTab({
                     placeholder="e.g. Architecture Team / Lead"
                     value={newDecisionWho}
                     onChange={(e) => setNewDecisionWho(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -803,7 +803,7 @@ export default function AdvancedAiTab({
                   placeholder="Explain the advantages, performance characteristics, and why other options were discarded..."
                   value={newDecisionWhy}
                   onChange={(e) => setNewDecisionWhy(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -815,7 +815,7 @@ export default function AdvancedAiTab({
                     placeholder="Pinecone, Qdrant, ChromaDB"
                     value={newDecisionAlternatives}
                     onChange={(e) => setNewDecisionAlternatives(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
@@ -826,7 +826,7 @@ export default function AdvancedAiTab({
                     placeholder="postgres, database, vector, scalability"
                     value={newDecisionTags}
                     onChange={(e) => setNewDecisionTags(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -841,7 +841,7 @@ export default function AdvancedAiTab({
                 <button
                   onClick={handleSaveDecision}
                   disabled={savingDecision || !newDecisionWhat.trim() || !newDecisionWhy.trim()}
-                  className="px-4 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
+                  className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
                 >
                   {savingDecision ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                   Save to Knowledge Graph
@@ -853,12 +853,12 @@ export default function AdvancedAiTab({
           {/* Historical Decisions Grid */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider flex items-center gap-2">
-              <FolderGit2 className="w-3.5 h-3.5 text-purple-400" /> Recorded Architectural Decisions ({decisions.length})
+              <FolderGit2 className="w-3.5 h-3.5 text-blue-400" /> Recorded Architectural Decisions ({decisions.length})
             </h4>
 
             {loadingDecisions ? (
               <div className="text-center py-10 text-slate-400">
-                <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-purple-400" />
+                <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-400" />
                 <p className="text-xs">Loading decision graph...</p>
               </div>
             ) : decisions.length === 0 ? (
@@ -871,17 +871,17 @@ export default function AdvancedAiTab({
                 {decisions.map((dec) => (
                   <div
                     key={dec.id}
-                    className="glass-panel p-4 rounded-xl border border-white/10 bg-[#0d111f]/60 space-y-3 hover:border-purple-500/30 transition-all"
+                    className="glass-panel p-4 rounded-xl border border-white/10 bg-[#0d111f]/60 space-y-3 hover:border-blue-500/30 transition-all"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <h5 className="text-xs font-bold text-white leading-snug">{dec.what}</h5>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-medium shrink-0">
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-medium shrink-0">
                         {dec.who}
                       </span>
                     </div>
 
                     <p className="text-xs text-slate-300 leading-relaxed bg-black/20 p-2.5 rounded-lg border border-white/5">
-                      <strong className="text-purple-300 font-semibold block mb-0.5 text-[11px]">Rationale:</strong>
+                      <strong className="text-blue-300 font-semibold block mb-0.5 text-[11px]">Rationale:</strong>
                       {dec.why}
                     </p>
 
@@ -898,7 +898,7 @@ export default function AdvancedAiTab({
                           key={idx}
                           className="px-2 py-0.5 rounded bg-white/[0.04] text-[10px] text-slate-400 border border-white/5 flex items-center gap-1"
                         >
-                          <Tag className="w-2.5 h-2.5 text-purple-400" /> {tag}
+                          <Tag className="w-2.5 h-2.5 text-blue-400" /> {tag}
                         </span>
                       ))}
                       <span className="text-[10px] text-slate-500 ml-auto">
@@ -920,7 +920,7 @@ export default function AdvancedAiTab({
           <div className="glass-panel p-5 rounded-2xl border border-white/10 bg-[#0d111f]/70 space-y-4">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-purple-400" /> Autonomous Multi-Agent Orchestration State Machine
+                <Cpu className="w-4 h-4 text-blue-400" /> Autonomous Multi-Agent Orchestration State Machine
               </h3>
               <p className="text-xs text-slate-400">
                 Dispatches three autonomous specialized agents across project telemetry, synthesized by an
@@ -939,9 +939,9 @@ export default function AdvancedAiTab({
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-purple-950/30 border border-purple-500/20 space-y-1.5">
-                <div className="flex items-center gap-2 text-purple-300 font-semibold text-xs">
-                  <BrainCircuit className="w-4 h-4 text-purple-400" /> Research Agent
+              <div className="p-3.5 rounded-xl bg-blue-950/30 border border-blue-500/20 space-y-1.5">
+                <div className="flex items-center gap-2 text-blue-300 font-semibold text-xs">
+                  <BrainCircuit className="w-4 h-4 text-blue-400" /> Research Agent
                 </div>
                 <p className="text-[11px] text-slate-400">
                   Reviews architectural design patterns, RAG document vault, and technical trade-offs.
@@ -997,12 +997,12 @@ export default function AdvancedAiTab({
                   type="text"
                   value={orchestratorQuery}
                   onChange={(e) => setOrchestratorQuery(e.target.value)}
-                  className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
                 />
                 <button
                   onClick={handleRunOrchestrator}
                   disabled={orchestrating || !orchestratorQuery.trim()}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 whitespace-nowrap"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 whitespace-nowrap"
                 >
                   {orchestrating ? (
                     <>
@@ -1022,12 +1022,12 @@ export default function AdvancedAiTab({
           {orchestratorResult && (
             <div className="space-y-4 animate-in fade-in duration-300">
               {/* Executive Synthesis Card */}
-              <div className="glass-panel p-5 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-[#120d2b] to-[#0a0c1a] space-y-3">
+              <div className="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-950/20 to-[#0a0c1a] space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-purple-400" /> Executive Supervisor Synthesis
+                  <h4 className="text-xs font-bold text-blue-300 uppercase tracking-wider flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-blue-400" /> Executive Supervisor Synthesis
                   </h4>
-                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-200 border border-purple-500/30 font-medium">
+                  <span className="text-[10px] px-2.5 py-0.5 rounded-md bg-blue-500/20 text-blue-200 border border-blue-500/30 font-medium">
                     {orchestratorResult.participating_agents.length} Agents Synchronized
                   </span>
                 </div>
@@ -1049,7 +1049,7 @@ export default function AdvancedAiTab({
                           {insight.agent_name.includes("Planner") ? (
                             <Calendar className="w-3.5 h-3.5 text-blue-400" />
                           ) : insight.agent_name.includes("Research") ? (
-                            <BrainCircuit className="w-3.5 h-3.5 text-purple-400" />
+                            <BrainCircuit className="w-3.5 h-3.5 text-blue-400" />
                           ) : (
                             <Layers className="w-3.5 h-3.5 text-amber-400" />
                           )}
@@ -1070,7 +1070,7 @@ export default function AdvancedAiTab({
                             key={fIdx}
                             className="text-[10px] text-slate-300 flex items-start gap-1.5 leading-snug"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1 shrink-0" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1 shrink-0" />
                             {finding}
                           </li>
                         ))}
@@ -1092,7 +1092,7 @@ export default function AdvancedAiTab({
                         key={idx}
                         className="p-2.5 rounded-xl bg-black/40 border border-white/5 text-xs text-slate-200 flex items-start gap-2"
                       >
-                        <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[10px] font-bold shrink-0">
+                        <span className="w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-[10px] font-bold shrink-0">
                           {idx + 1}
                         </span>
                         <span>{act}</span>
@@ -1114,7 +1114,7 @@ export default function AdvancedAiTab({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Award className="w-4 h-4 text-purple-400" /> Deterministic Project Readiness Rubric
+                  <Award className="w-4 h-4 text-blue-400" /> Deterministic Project Readiness Rubric
                 </h3>
                 <p className="text-xs text-slate-400">
                   Authoritative 4-pillar score evaluating Architecture & Security (30%), Code Quality (25%),
@@ -1125,7 +1125,7 @@ export default function AdvancedAiTab({
               <button
                 onClick={handleRunAudit}
                 disabled={loadingAudit}
-                className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 self-start md:self-auto"
+                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 self-start md:self-auto"
               >
                 {loadingAudit ? (
                   <>
@@ -1142,11 +1142,11 @@ export default function AdvancedAiTab({
             {auditReport && (
               <div className="space-y-5 animate-in fade-in duration-300 pt-2">
                 {/* Hero Grade Card */}
-                <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-blue-950/40 border border-purple-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-950/40 via-slate-900/40 to-slate-900/40 border border-blue-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 flex flex-col items-center justify-center text-white shadow-xl shadow-purple-600/30 border border-purple-400/40">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 flex flex-col items-center justify-center text-white shadow-xl shadow-blue-900/30 border border-blue-400/40">
                       <span className="text-3xl font-extrabold leading-none">{auditReport.letter_grade}</span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-purple-200 mt-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-blue-200 mt-1">
                         Grade
                       </span>
                     </div>
@@ -1157,7 +1157,7 @@ export default function AdvancedAiTab({
                           Overall Readiness Score: {auditReport.readiness_score}/100
                         </h4>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${
                             auditReport.readiness_score >= 80
                               ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
                               : auditReport.readiness_score >= 60
@@ -1181,11 +1181,11 @@ export default function AdvancedAiTab({
                     <div className="p-2.5 rounded-xl bg-black/40 border border-white/5 space-y-1">
                       <div className="flex justify-between text-[10px]">
                         <span className="text-slate-400">Architecture (30%)</span>
-                        <span className="text-purple-300 font-bold">{auditReport.architecture_score}%</span>
+                        <span className="text-blue-300 font-bold">{auditReport.architecture_score}%</span>
                       </div>
                       <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
                         <div
-                          className="bg-purple-500 h-full rounded-full"
+                          className="bg-cyan-500 h-full rounded-full"
                           style={{ width: `${auditReport.architecture_score}%` }}
                         />
                       </div>
@@ -1271,7 +1271,7 @@ export default function AdvancedAiTab({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <FileCode className="w-4 h-4 text-purple-400" /> Code Review & Unit Test Generator
+                  <FileCode className="w-4 h-4 text-blue-400" /> Code Review & Unit Test Generator
                 </h3>
                 <p className="text-xs text-slate-400">
                   Inspect code for security vulnerabilities, memory anti-patterns, and generate production-ready
@@ -1308,14 +1308,14 @@ export default function AdvancedAiTab({
               rows={8}
               value={codeSnippet}
               onChange={(e) => setCodeSnippet(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-purple-200 font-mono text-xs focus:outline-none focus:border-purple-500 leading-relaxed"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-blue-200 font-mono text-xs focus:outline-none focus:border-blue-500 leading-relaxed"
             />
 
             <div className="flex items-center gap-3">
               <button
                 onClick={handleReviewCode}
                 disabled={reviewingCode || !codeSnippet.trim()}
-                className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2"
+                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2"
               >
                 {reviewingCode ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Shield className="w-3.5 h-3.5" />}
                 Review Code & Security
@@ -1337,10 +1337,10 @@ export default function AdvancedAiTab({
 
             {/* Code Review Result */}
             {reviewResult && (
-              <div className="p-4 rounded-xl bg-[#0b0e1a] border border-purple-500/30 space-y-3 animate-in fade-in duration-200">
+              <div className="p-4 rounded-xl bg-[#0b0e1a] border border-blue-500/30 space-y-3 animate-in fade-in duration-200">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5 text-purple-400" /> Review Score: {reviewResult.score}/100
+                  <span className="text-xs font-bold text-blue-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <Shield className="w-3.5 h-3.5 text-blue-400" /> Review Score: {reviewResult.score}/100
                   </span>
                   <span className="text-[10px] text-slate-400">{reviewResult.summary}</span>
                 </div>
@@ -1407,7 +1407,7 @@ export default function AdvancedAiTab({
                         key={idx}
                         className="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 text-[10px] border border-indigo-500/20"
                       >
-                        ✓ {tc}
+                        <Check className="w-2.5 h-2.5 inline mr-1 text-emerald-400" />{tc}
                       </span>
                     ))}
                   </div>

@@ -128,17 +128,17 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-950/40 via-purple-950/30 to-indigo-950/40 border border-amber-500/20 p-6 backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950/30 via-slate-900/40 to-slate-900/40 border border-blue-500/20 p-6 backdrop-blur-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/30">
                 <Zap className="w-4 h-4" />
               </span>
               <h2 className="text-xl font-bold text-white tracking-tight">
                 ML Intelligence & Skill Graph
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                 Phase 5
               </span>
             </div>
@@ -164,7 +164,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
               onClick={() => setActiveSubTab("skill_graph")}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeSubTab === "skill_graph"
-                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/20"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-900/30"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -331,7 +331,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
 
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-1">
                   <span className="text-[10px] uppercase font-bold text-slate-400">Days to Deadline</span>
-                  <div className="text-2xl font-bold text-purple-400">
+                  <div className="text-2xl font-bold text-blue-400">
                     {riskData.days_left}{" "}
                     <span className="text-xs text-slate-400 font-normal">days</span>
                   </div>
@@ -394,7 +394,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
         <div className="space-y-6">
           {loadingGap ? (
             <div className="py-20 flex flex-col items-center gap-3 text-slate-400">
-              <Loader2 className="w-7 h-7 animate-spin text-purple-400" />
+              <Loader2 className="w-7 h-7 animate-spin text-blue-400" />
               <span className="text-xs">Traversing NetworkX skill prerequisite DAG & curriculum...</span>
             </div>
           ) : !skillGapData ? (
@@ -408,7 +408,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <GraduationCap className="w-5 h-5 text-purple-400" />
+                      <GraduationCap className="w-5 h-5 text-blue-400" />
                       <h3 className="text-base font-bold text-white">
                         Team Skill Gap & Prerequisite Curriculum
                       </h3>
@@ -419,7 +419,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <div className="text-2xl font-black text-purple-400">
+                      <div className="text-2xl font-black text-blue-400">
                         {skillGapData.coverage_percentage}%
                       </div>
                       <div className="text-[10px] uppercase font-bold text-slate-400">
@@ -481,7 +481,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                    <BrainCircuit className="w-4 h-4 text-purple-400" />
+                    <BrainCircuit className="w-4 h-4 text-cyan-400" />
                     Topologically Ordered Learning Path ({skillGapData.recommended_learning_path.length} Steps)
                   </h4>
                   <span className="text-[10px] text-slate-500">
@@ -493,11 +493,11 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
                   {skillGapData.recommended_learning_path.map((step) => (
                     <div
                       key={step.step_number}
-                      className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-purple-500/30 transition-all space-y-3"
+                      className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-blue-500/30 transition-all space-y-3"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-3">
-                          <span className="flex items-center justify-center w-7 h-7 rounded-xl bg-purple-500/20 text-purple-300 text-xs font-black border border-purple-500/30">
+                          <span className="flex items-center justify-center w-7 h-7 rounded-xl bg-blue-500/20 text-blue-300 text-xs font-black border border-blue-500/30">
                             {step.step_number}
                           </span>
                           <div>
@@ -547,15 +547,15 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
                                 href={res.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/5 hover:border-purple-500/30 text-xs text-slate-300 flex items-center justify-between group transition-all"
+                                className="p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/5 hover:border-blue-500/30 text-xs text-slate-300 flex items-center justify-between group transition-all"
                               >
                                 <div className="min-w-0 pr-2">
-                                  <div className="font-semibold text-white truncate group-hover:text-purple-300 transition-colors">
+                                  <div className="font-semibold text-white truncate group-hover:text-blue-300 transition-colors">
                                     {res.title}
                                   </div>
                                   <span className="text-[10px] text-slate-500">{res.provider}</span>
                                 </div>
-                                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-400 shrink-0" />
+                                <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 shrink-0" />
                               </a>
                             ))}
                           </div>
@@ -709,7 +709,7 @@ export default function IntelligenceTab({ projectId, projectTitle }: Intelligenc
                           </div>
                           <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden">
                             <div
-                              className="bg-purple-500 h-full rounded-full"
+                              className="bg-cyan-500 h-full rounded-full"
                               style={{ width: `${cand.availability_score}%` }}
                             />
                           </div>

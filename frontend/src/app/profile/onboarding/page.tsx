@@ -111,9 +111,9 @@ export default function OnboardingPage() {
   return (
     <div className="max-w-3xl mx-auto py-6 space-y-8 pb-16">
       <div className="space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-xs font-semibold text-indigo-300">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/30 text-xs font-semibold text-blue-300">
           <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          AI Matching Profile Setup
+          Technical Profile Setup
         </div>
         <h1 className="text-3xl font-extrabold text-white tracking-tight">
           Student Profile & Skills Wizard
@@ -238,8 +238,8 @@ export default function OnboardingPage() {
         {/* Technical Skills Ratings */}
         <div className="space-y-4">
           <h2 className="text-base font-bold text-white flex items-center gap-2 pb-2 border-b border-white/10">
-            <Code className="w-4 h-4 text-purple-400" />
-            Technical Skills & Proficiency (Level 1–5)
+            <Code className="w-4 h-4 text-blue-400" />
+            Technical Skills & Proficiency (Level 1 to 5)
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -263,7 +263,7 @@ export default function OnboardingPage() {
                         onClick={() => setSkillLevel(sk.name, lvl)}
                         className={`w-6 h-6 rounded-md text-[11px] font-bold transition-all ${
                           lvl <= currentLvl
-                            ? "bg-indigo-600 text-white shadow-sm"
+                            ? "bg-blue-600 text-white shadow-sm"
                             : "bg-white/[0.05] text-slate-500 hover:bg-white/[0.1]"
                         }`}
                       >
@@ -280,7 +280,7 @@ export default function OnboardingPage() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white font-bold text-sm shadow-xl shadow-indigo-600/25 transition-all flex items-center justify-center gap-2"
+          className="w-full py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-900/30 transition-all flex items-center justify-center gap-2"
         >
           {saving ? "Saving Profile..." : "Save Profile & Explore Projects"}
           <ArrowRight className="w-4 h-4" />

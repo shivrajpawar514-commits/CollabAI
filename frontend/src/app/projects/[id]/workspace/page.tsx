@@ -57,7 +57,7 @@ const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
   { id: "todo", title: "To Do", color: "border-blue-500/40 text-blue-400" },
   { id: "in_progress", title: "In Progress", color: "border-amber-500/40 text-amber-400" },
-  { id: "review", title: "Review", color: "border-purple-500/40 text-purple-400" },
+  { id: "review", title: "Review", color: "border-sky-500/40 text-sky-400" },
   { id: "completed", title: "Completed", color: "border-emerald-500/40 text-emerald-400" },
 ] as const;
 
@@ -341,7 +341,7 @@ function ProjectWorkspaceContent() {
               {project?.title || "Project Workspace"}
             </h1>
             <span
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${
+              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold border ${
                 wsConnected
                   ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300"
                   : "bg-amber-500/10 border-amber-500/30 text-amber-300"
@@ -404,7 +404,7 @@ function ProjectWorkspaceContent() {
               <Icon className="w-4 h-4" />
               {tab.name}
               {tab.count !== undefined && (
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/40 text-slate-300">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-black/40 text-slate-300">
                   {tab.count}
                 </span>
               )}
@@ -428,7 +428,7 @@ function ProjectWorkspaceContent() {
                     <span className={`text-xs font-bold uppercase tracking-wider ${col.color}`}>
                       {col.title}
                     </span>
-                    <span className="text-[11px] font-bold text-slate-400 px-2 py-0.5 rounded-full bg-white/5">
+                    <span className="text-[11px] font-bold text-slate-400 px-2 py-0.5 rounded-md bg-white/5">
                       {colTasks.length}
                     </span>
                   </div>
@@ -566,7 +566,7 @@ function ProjectWorkspaceContent() {
                   key={msg.id}
                   className={`flex items-start gap-3 ${isMe ? "flex-row-reverse" : "flex-row"}`}
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white text-xs font-bold flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 text-white text-xs font-bold flex items-center justify-center shrink-0">
                     {msg.user?.full_name?.charAt(0) || "U"}
                   </div>
 
@@ -704,7 +704,7 @@ function ProjectWorkspaceContent() {
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-semibold text-white text-xs">{member.user.full_name}</span>
-                          <span className="text-[10px] px-2 py-0.2 rounded-full bg-indigo-500/20 text-indigo-300 font-bold uppercase">
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-500/20 text-blue-300 font-bold uppercase">
                             {member.role}
                           </span>
                         </div>
@@ -783,14 +783,14 @@ function ProjectWorkspaceContent() {
             <div className="space-y-2">
               <button
                 onClick={() => setShowTeammateMatchModal(true)}
-                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/25"
+                className="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-900/30"
               >
                 <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
-                AI Match Teammates
+                Match Teammates
               </button>
               <button
                 onClick={() => router.push(`/projects?tab=teammates`)}
-                className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all border border-white/10"
+                className="w-full py-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all border border-white/10"
               >
                 Browse Public Discovery
               </button>

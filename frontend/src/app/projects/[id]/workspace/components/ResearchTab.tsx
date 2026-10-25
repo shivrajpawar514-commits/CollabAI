@@ -170,17 +170,17 @@ export default function ResearchTab({ projectId, projectTitle }: ResearchTabProp
   return (
     <div className="space-y-6">
       {/* Top Banner & Overview */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-950/40 via-purple-950/30 to-slate-900/40 border border-indigo-500/20 p-6 backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950/30 via-slate-900/40 to-slate-900/40 border border-blue-500/20 p-6 backdrop-blur-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/30">
                 <BookOpen className="w-4 h-4" />
               </span>
               <h2 className="text-xl font-bold text-white tracking-tight">
-                AI Research & Knowledge Vault (RAG)
+                Engineering Research & Knowledge Vault (RAG)
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 Phase 4
               </span>
             </div>
@@ -260,7 +260,7 @@ export default function ResearchTab({ projectId, projectTitle }: ResearchTabProp
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-1.5 text-center">
-                    <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-1">
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 mb-1">
                       <UploadCloud className="w-4 h-4" />
                     </div>
                     <span className="text-xs font-medium text-slate-200">
@@ -430,7 +430,7 @@ export default function ResearchTab({ projectId, projectTitle }: ResearchTabProp
               </div>
               {selectedDocIds.length > 0 && (
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
+                  <span className="text-[10px] text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
                     Targeting {selectedDocIds.length} doc{selectedDocIds.length > 1 ? "s" : ""}
                   </span>
                   <button
@@ -539,7 +539,7 @@ export default function ResearchTab({ projectId, projectTitle }: ResearchTabProp
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1.5 ${
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold border flex items-center gap-1.5 ${
                         entry.groundedness_score >= 0.8
                           ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                           : entry.groundedness_score >= 0.5

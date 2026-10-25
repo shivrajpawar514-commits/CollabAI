@@ -49,9 +49,9 @@ export default function HomePage() {
     <div className="space-y-20 pb-16">
       {/* Hero Section */}
       <section className="text-center pt-10 sm:pt-16 max-w-4xl mx-auto space-y-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-xs font-semibold text-indigo-300 backdrop-blur-md animate-pulse">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          AI-Native Student Collaboration & Engineering Platform
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-blue-500/30 bg-blue-500/10 text-xs font-semibold text-blue-300 backdrop-blur-md">
+          <Code2 className="w-3.5 h-3.5 text-cyan-400" />
+          Student Engineering & Milestone Collaboration Platform
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
@@ -59,23 +59,23 @@ export default function HomePage() {
         </h1>
 
         <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-          Stop struggling to form hackathon teams or dividing unequal workloads. CollabAI pairs students based on skill complementarity, auto-generates milestones, and assists every phase of your project lifecycle.
+          CollabAI pairs engineering students based on technical skill gaps, structures complex project milestones, and coordinates repository deliverables in unified team workspaces.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Link
             href="/projects"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-semibold flex items-center justify-center gap-2 shadow-xl shadow-indigo-500/25 transition-all"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold flex items-center justify-center gap-2 shadow-lg shadow-blue-900/30 transition-all"
           >
             <Compass className="w-5 h-5 text-cyan-300" />
             Discover Projects
           </Link>
           <Link
             href="/projects/create"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold flex items-center justify-center gap-2 backdrop-blur-md transition-all"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold flex items-center justify-center gap-2 backdrop-blur-md transition-all"
           >
-            <Sparkles className="w-5 h-5 text-indigo-400" />
-            AI Project Planner
+            <Layers className="w-5 h-5 text-blue-400" />
+            Project Planner
           </Link>
           <Link
             href="/auth/login"
@@ -89,19 +89,17 @@ export default function HomePage() {
       {/* Interactive AI Project Generator Showcase */}
       <section className="max-w-4xl mx-auto">
         <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-
           <div className="flex items-center justify-between pb-6 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
                 <BrainCircuit className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
-                <h3 className="text-white font-bold text-lg">AI Project & Team Architect</h3>
-                <p className="text-xs text-slate-400">Describe any rough idea in natural language — watch it plan roles & milestones</p>
+                <h3 className="text-white font-bold text-lg">Project Architecture & Team Planner</h3>
+                <p className="text-xs text-slate-400">Describe any technical project idea in natural language: generate structured roles, milestones, and deliverables</p>
               </div>
             </div>
-            <span className="text-[11px] font-semibold uppercase px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
+            <span className="text-[11px] font-semibold uppercase px-2.5 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
               Structured Pydantic Model
             </span>
           </div>
@@ -203,27 +201,27 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="glass-panel glass-panel-hover p-6 rounded-2xl border border-white/10 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300">
+            <div className="w-12 h-12 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
               <Users className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-white text-lg">AI Team-Matching</h3>
+            <h3 className="font-bold text-white text-lg">Skill-Based Matching</h3>
             <p className="text-sm text-slate-400 leading-relaxed">
               Calculates skill complementarity, interest vector similarity, and schedule overlap so teams don't suffer from duplicate or missing skills.
             </p>
           </div>
 
           <div className="glass-panel glass-panel-hover p-6 rounded-2xl border border-white/10 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
+            <div className="w-12 h-12 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
               <Sparkles className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-white text-lg">AI Project Planner</h3>
+            <h3 className="font-bold text-white text-lg">Milestone Planner</h3>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Transforms vague concepts into structured Pydantic milestones, subtasks, estimated hours, and tech stack recommendations in seconds.
+              Transforms technical specs into structured Pydantic milestones, subtasks, estimated hours, and tech stack recommendations.
             </p>
           </div>
 
           <div className="glass-panel glass-panel-hover p-6 rounded-2xl border border-white/10 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+            <div className="w-12 h-12 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
               <Layers className="w-6 h-6" />
             </div>
             <h3 className="font-bold text-white text-lg">Project-Specific RAG</h3>
@@ -233,36 +231,35 @@ export default function HomePage() {
           </div>
 
           <div className="glass-panel glass-panel-hover p-6 rounded-2xl border border-white/10 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300">
+            <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-300">
               <Code2 className="w-6 h-6" />
             </div>
             <h3 className="font-bold text-white text-lg">100% Free-Tier Stack</h3>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Designed from day 1 to run on free tools: Gemini Free, Groq, Ollama, pgvector on Neon/Supabase, and Docker Compose locally.
+              Designed to run on free tools: Gemini Free, Groq, Ollama, pgvector on Neon/Supabase, and Docker Compose locally.
             </p>
           </div>
         </div>
       </section>
 
       {/* Call to action */}
-      <section className="glass-panel p-8 sm:p-12 rounded-3xl border border-indigo-500/30 text-center max-w-4xl mx-auto space-y-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-cyan-500/10 pointer-events-none" />
+      <section className="glass-panel p-8 sm:p-12 rounded-2xl border border-blue-500/20 text-center max-w-4xl mx-auto space-y-6 relative overflow-hidden">
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white">
-          Ready to kick off your next college project?
+          Ready to kick off your next student project?
         </h2>
         <p className="text-slate-300 text-sm sm:text-base max-w-lg mx-auto">
-          Explore over 20 seeded student projects or log in with the instant demo account to explore Phase 1 features.
+          Explore over 20 seeded student projects or log in with the instant demo account to test the complete workflow.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
           <Link
             href="/projects"
-            className="px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-slate-200 transition-all text-sm shadow-lg"
+            className="px-6 py-3 rounded-lg bg-white text-black font-semibold hover:bg-slate-200 transition-all text-sm shadow-md"
           >
             Explore Projects
           </Link>
           <Link
             href="/auth/login"
-            className="px-6 py-3 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold transition-all text-sm backdrop-blur-md"
+            className="px-6 py-3 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold transition-all text-sm backdrop-blur-md"
           >
             Launch Demo Student
           </Link>

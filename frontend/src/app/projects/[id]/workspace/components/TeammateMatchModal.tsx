@@ -142,7 +142,7 @@ export default function TeammateMatchModal({
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-white text-sm">{cand.name}</span>
-                          <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${scoreBadgeColor}`}>
+                          <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md border ${scoreBadgeColor}`}>
                             {cand.match_score}% Match
                           </span>
                         </div>
@@ -160,8 +160,8 @@ export default function TeammateMatchModal({
                     <div className="flex flex-wrap items-center gap-1.5 pt-1">
                       <span className="text-[10px] text-slate-500 font-semibold uppercase">Matching:</span>
                       {cand.matching_skills.map((sk, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[10px] font-medium">
-                          ✓ {sk}
+                        <span key={i} className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[10px] font-medium flex items-center gap-1">
+                          <Check className="w-2.5 h-2.5 text-emerald-400" /> {sk}
                         </span>
                       ))}
 

@@ -198,7 +198,7 @@ export default function AiPlannerModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs"
+                className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs"
               >
                 Dismiss
               </button>
@@ -206,7 +206,7 @@ export default function AiPlannerModal({
                 type="button"
                 onClick={handleApply}
                 disabled={isApplying}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold text-xs shadow-md shadow-indigo-600/30 flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md shadow-blue-900/30 flex items-center gap-1.5"
               >
                 {isApplying ? (
                   <>

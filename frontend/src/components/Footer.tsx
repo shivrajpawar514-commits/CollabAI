@@ -7,12 +7,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
+              <Code2 className="w-4 h-4 text-cyan-400" />
             </div>
             <div>
               <p className="font-semibold text-white text-sm">CollabAI</p>
-              <p className="text-xs text-slate-400">AI-Native Student Collaboration & Project Engineering</p>
+              <p className="text-xs text-slate-400">Student Engineering & Project Collaboration</p>
             </div>
           </div>
 
@@ -21,10 +21,13 @@ export default function Footer() {
               Project Discovery
             </Link>
             <Link href="/projects/create" className="hover:text-white transition-colors">
-              AI Project Planner
+              Project Planner
             </Link>
-            <Link href="/profile/onboarding" className="hover:text-white transition-colors">
-              Student Profile
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms & Conditions
             </Link>
             <a
               href="https://github.com"
@@ -38,7 +41,7 @@ export default function Footer() {
           </div>
 
           <div className="text-xs text-slate-500 flex items-center gap-1">
-            Built with 100% free-tier open source stack
+            Released under the MIT License
           </div>
         </div>
       </div>

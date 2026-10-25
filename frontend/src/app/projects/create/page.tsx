@@ -129,10 +129,10 @@ export default function CreateProjectPage() {
       </div>
 
       {/* AI Assistant Generator Panel */}
-      <div className="glass-panel p-6 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/30 to-purple-950/20 space-y-4">
-        <div className="flex items-center gap-2 text-indigo-300 font-bold text-sm">
+      <div className="glass-panel p-6 rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-950/30 to-slate-900/30 space-y-4">
+        <div className="flex items-center gap-2 text-blue-300 font-bold text-sm">
           <Sparkles className="w-4 h-4 text-cyan-400" />
-          AI Proposal Generator
+          Project Architecture Planner
         </div>
         <p className="text-xs text-slate-300">
           Have an idea but not sure how to break it into milestones, roles, and tech stacks? Describe it here and our planner will outline it.
@@ -149,7 +149,7 @@ export default function CreateProjectPage() {
             type="button"
             onClick={handleAiAutoFill}
             disabled={isAiGenerating}
-            className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-all shadow-md shadow-indigo-600/30"
+            className="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-all shadow-md shadow-blue-900/30"
           >
             {isAiGenerating ? (
               <Zap className="w-4 h-4 animate-spin text-cyan-300" />
@@ -165,9 +165,9 @@ export default function CreateProjectPage() {
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
                 <CheckCircle className="w-3.5 h-3.5 text-cyan-400" />
-                AI Proposal Outline Generated
+                Project Proposal Outline Generated
               </span>
-              <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-semibold">
+              <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-md font-semibold">
                 Form Pre-filled Below
               </span>
             </div>
@@ -345,7 +345,7 @@ export default function CreateProjectPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2"
+          className="w-full py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-md shadow-blue-900/30 transition-all flex items-center justify-center gap-2"
         >
           {loading ? "Publishing..." : "Publish Project"}
         </button>

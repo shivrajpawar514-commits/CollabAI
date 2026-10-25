@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Zap,
+  Code2,
 } from "lucide-react";
 import { api, setAuthTokens } from "@/lib/api";
 
@@ -73,22 +74,22 @@ function LoginForm() {
   return (
     <div className="max-w-md mx-auto py-8 sm:py-16 space-y-6">
       <div className="text-center space-y-2">
-        <div className="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-500 to-cyan-400 p-[1.5px] shadow-lg shadow-indigo-500/25">
+        <div className="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 p-[1.5px] shadow-lg shadow-blue-500/25">
           <div className="w-full h-full bg-[#0d101d] rounded-[14px] flex items-center justify-center">
-            <Sparkles className="w-6 h-6 text-cyan-400" />
+            <Code2 className="w-6 h-6 text-cyan-400" />
           </div>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           {tab === "login" ? "Welcome back" : "Join CollabAI"}
         </h1>
         <p className="text-xs sm:text-sm text-slate-400">
-          The intelligent platform for student hackathons & engineering teams.
+          The open engineering platform for student hackathons & project teams.
         </p>
       </div>
 
       {/* Instant Demo Account Banner */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border border-indigo-500/40 glass-panel space-y-3 text-center">
-        <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-indigo-300 uppercase tracking-wider">
+      <div className="p-4 rounded-xl bg-gradient-to-r from-blue-950/40 to-slate-900/40 border border-blue-500/30 glass-panel space-y-3 text-center">
+        <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-blue-300 uppercase tracking-wider">
           <Zap className="w-4 h-4 text-cyan-400" /> One-Click Demo Mode
         </div>
         <p className="text-xs text-slate-300">
@@ -98,7 +99,7 @@ function LoginForm() {
           type="button"
           onClick={handleDemoLogin}
           disabled={loading}
-          className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-95 text-white font-bold text-xs shadow-md shadow-indigo-500/25 transition-all flex items-center justify-center gap-2"
+          className="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
         >
           <ShieldCheck className="w-4 h-4" />
           Sign In as Demo Student

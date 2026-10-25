@@ -159,16 +159,16 @@ How can I help unblock your team today?`,
   return (
     <div className="space-y-4">
       {/* Copilot Context Bar */}
-      <div className="p-4 rounded-2xl glass-panel border border-indigo-500/30 bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-black/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+      <div className="p-4 rounded-2xl glass-panel border border-blue-500/20 bg-gradient-to-r from-blue-950/30 to-slate-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600/30 text-cyan-300 border border-indigo-500/40 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-600/20">
+          <div className="w-10 h-10 rounded-xl bg-blue-600/20 text-cyan-300 border border-blue-500/30 flex items-center justify-center shrink-0 shadow-md">
             <Bot className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-bold text-white text-sm">CollabAI Project Copilot</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 Live Context
               </span>
             </div>

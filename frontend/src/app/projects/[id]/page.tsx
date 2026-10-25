@@ -82,7 +82,7 @@ export default function ProjectDetailPage() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 pb-6 border-b border-white/10">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold uppercase tracking-wider">
+            <span className="text-xs px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold uppercase tracking-wider">
               {project.status}
             </span>
             <span className="text-xs text-slate-400">Team Size: Max {project.max_team_size}</span>
@@ -91,16 +91,16 @@ export default function ProjectDetailPage() {
             {project.title}
           </h1>
           <p className="text-sm text-slate-300">
-            Created and led by <span className="text-indigo-400 font-semibold">{project.owner.full_name}</span>
+            Created and led by <span className="text-blue-400 font-semibold">{project.owner.full_name}</span>
           </p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
           <Link
             href={`/projects/${project.id}/workspace`}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white text-xs font-bold shadow-md shadow-indigo-600/30 transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-900/30 transition-all"
           >
-            <Sparkles className="w-4 h-4 text-cyan-300" />
+            <Code2 className="w-4 h-4 text-cyan-300" />
             Open Team Workspace
           </Link>
 
@@ -109,7 +109,7 @@ export default function ProjectDetailPage() {
               href={project.repo_url}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white text-xs font-semibold transition-all shrink-0"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white text-xs font-semibold transition-all shrink-0"
             >
               <Code2 className="w-4 h-4" />
               Repository
