@@ -79,29 +79,67 @@ Analyze the transcript and produce the structured executive summary, architectur
                 temperature=0.2,
             )
         except Exception as e:
-            # Fallback heuristic parser if LLM structured fails
+            # Fallback heuristic parser if LLM structured fails or no API key is provided
             lines = [l.strip() for l in transcript_text.splitlines() if l.strip()]
             summary = "\n".join(lines[:3]) if lines else "Team sync meeting completed."
-            return MeetingAnalysisResult(
-                meeting_title=meeting_title or "Team Standup",
-                executive_summary=summary,
-                key_topics=["Sprint Progress", "Technical Blockers"],
-                decisions=[
-                    ExtractedDecision(
-                        what="Proceed with agreed sprint deliverables",
-                        why="Maintain milestone velocity",
-                        who="Team",
-                        alternatives_considered=["Postpone milestone"],
-                        tags=["sprint"],
+
+            extracted_actions = []
+            extracted_decisions = []
+
+            for line in lines:
+                lower = line.lower()
+                speaker = line.split(":", 1)[0].strip() if ":" in line else "Team"
+                content = line.split(":", 1)[1].strip() if ":" in line else line
+
+                if any(k in lower for k in ["decision", "agreed", "commit", "choose", "approved"]):
+                    extracted_decisions.append(
+                        ExtractedDecision(
+                            what=content[:120],
+                            why="Team consensus discussed in meeting",
+                            who=speaker,
+                            alternatives_considered=[],
+                            tags=["architecture", "meeting"],
+                        )
                     )
-                ],
-                action_items=[
+                elif any(k in lower for k in ["action", "will", "implement", "finish", "complete", "wire up", "test", "estimate"]):
+                    priority = "urgent" if "urgent" in lower else "high" if "high" in lower else "medium"
+                    hours = 6 if "6" in lower else 4 if "4" in lower else 3
+                    extracted_actions.append(
+                        ExtractedActionItem(
+                            title=content[:80],
+                            description=f"Task discussed by {speaker}: {content}",
+                            suggested_assignee=speaker if speaker != "Team" else None,
+                            suggested_priority=priority,
+                            estimated_hours=hours,
+                        )
+                    )
+
+            if not extracted_actions:
+                extracted_actions.append(
                     ExtractedActionItem(
-                        title=f"Review meeting notes for: {lines[0][:60] if lines else 'Sprint'}",
+                        title=f"Review meeting notes: {lines[0][:50] if lines else 'Sprint'}",
                         description="Follow up on discussed items from the team transcript.",
                         suggested_priority="medium",
                         estimated_hours=2,
                     )
-                ],
+                )
+
+            if not extracted_decisions:
+                extracted_decisions.append(
+                    ExtractedDecision(
+                        what="Proceed with sprint roadmap deliverables",
+                        why="Maintain team sprint velocity",
+                        who="Team Consensus",
+                        alternatives_considered=["Postpone sprint tasks"],
+                        tags=["sprint"],
+                    )
+                )
+
+            return MeetingAnalysisResult(
+                meeting_title=meeting_title or "Team Standup",
+                executive_summary=summary,
+                key_topics=["Sprint Planning", "Technical Architecture", "Delivery"],
+                decisions=extracted_decisions,
+                action_items=extracted_actions,
                 overall_sentiment="productive",
             )

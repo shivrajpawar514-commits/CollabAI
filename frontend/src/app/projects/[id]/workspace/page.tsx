@@ -29,6 +29,7 @@ import {
   MessageCircle,
   Zap,
   Bot,
+  Cpu,
   BookOpen,
 } from "lucide-react";
 import {
@@ -50,6 +51,7 @@ import TeammateMatchModal from "./components/TeammateMatchModal";
 import CopilotTab from "./components/CopilotTab";
 import ResearchTab from "./components/ResearchTab";
 import IntelligenceTab from "./components/IntelligenceTab";
+import AdvancedAiTab from "./components/AdvancedAiTab";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -67,7 +69,7 @@ function ProjectWorkspaceContent() {
   const initialTab = (searchParams.get("tab") as any) || "kanban";
 
   const [activeTab, setActiveTab] = useState<
-    "kanban" | "chat" | "copilot" | "research" | "intelligence" | "team" | "milestones" | "files" | "activity"
+    "kanban" | "chat" | "copilot" | "research" | "intelligence" | "ai_lab" | "team" | "milestones" | "files" | "activity"
   >(initialTab);
 
 
@@ -133,7 +135,9 @@ function ProjectWorkspaceContent() {
 
     // Setup WebSocket
     const token = getAuthToken() || "";
-    const wsUrl = `ws://localhost:8000/api/v1/ws/projects/${projectId}?token=${token}`;
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/api/v1";
+    const wsBase = apiBase.replace(/^http/, "ws");
+    const wsUrl = `${wsBase}/ws/projects/${projectId}?token=${token}`;
     let socket: WebSocket | null = null;
     try {
       socket = new WebSocket(wsUrl);
@@ -376,6 +380,7 @@ function ProjectWorkspaceContent() {
           { id: "copilot", name: "AI Copilot", icon: Sparkles },
           { id: "research", name: "AI Research (RAG)", icon: BookOpen },
           { id: "intelligence", name: "ML Intelligence", icon: Zap },
+          { id: "ai_lab", name: "Autonomous AI Lab", icon: Cpu },
           { id: "team", name: "Team & Invites", icon: Users, count: team?.members.length },
           { id: "milestones", name: "Roadmap", icon: Target, count: milestones.length },
           { id: "files", name: "Files & Assets", icon: FolderArchive, count: files.length },
@@ -656,6 +661,19 @@ function ProjectWorkspaceContent() {
         <IntelligenceTab
           projectId={projectId}
           projectTitle={project?.title || "Project"}
+        />
+      )}
+
+      {/* TAB: AUTONOMOUS AI LAB & AGENTS */}
+      {activeTab === "ai_lab" && (
+        <AdvancedAiTab
+          projectId={projectId}
+          projectTitle={project?.title || "Project"}
+          milestones={milestones}
+          onTasksUpdated={() => {
+            api.getTasks(projectId).then(setTasks).catch(() => {});
+            api.getActivityFeed(projectId).then(setActivities).catch(() => {});
+          }}
         />
       )}
 

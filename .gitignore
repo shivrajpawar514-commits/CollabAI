@@ -28,6 +28,7 @@ ENV/
 *.sqlite3
 *.db
 .env
+.env*.local
 !.env.example
 
 # OS files

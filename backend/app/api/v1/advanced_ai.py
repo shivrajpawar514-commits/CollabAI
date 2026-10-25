@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
-from app.core.security import get_current_user
+from app.api.deps import get_current_user
 from app.models.user import User
 from app.services.advanced_ai_service import AdvancedAIService
 from ai.agents.code_assistant import GeneratedTestsResult, ProjectReadinessReport

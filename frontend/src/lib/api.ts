@@ -482,6 +482,118 @@ export interface RecommendationFeedbackResponse {
   created_at: string;
 }
 
+// Phase 7 Types: Voice Meeting Assistant, Decision Memory Graph, Multi-Agent Orchestrator, Code Assistant & Readiness
+export interface MeetingActionItem {
+  id: string;
+  meeting_id: string;
+  project_id: string;
+  title: string;
+  description: string;
+  suggested_assignee?: string;
+  priority: string;
+  estimated_hours: number;
+  is_converted: boolean;
+  converted_task_id?: string;
+  created_at: string;
+}
+
+export interface MeetingNoteItem {
+  id: string;
+  project_id: string;
+  organizer_id: string;
+  title: string;
+  executive_summary: string;
+  key_topics_json: string[];
+  overall_sentiment: string;
+  action_items: MeetingActionItem[];
+  created_at: string;
+}
+
+export interface ConvertActionItemsResponse {
+  converted_count: number;
+  created_tasks: Task[];
+}
+
+export interface ProjectDecisionItem {
+  id: string;
+  project_id: string;
+  recorder_id: string;
+  what: string;
+  why: string;
+  who: string;
+  alternatives_json: string[];
+  tags_json: string[];
+  linked_task_id?: string;
+  linked_document_id?: string;
+  created_at: string;
+}
+
+export interface DecisionQueryResponse {
+  query: string;
+  answer: string;
+  confidence_score: number;
+  matched_decisions: {
+    id: string;
+    project_id: string;
+    what: string;
+    why: string;
+    who: string;
+    when: string;
+    alternatives_considered: string[];
+    tags: string[];
+    score: number;
+  }[];
+}
+
+export interface AgentInsight {
+  agent_name: string;
+  role: string;
+  summary: string;
+  findings: string[];
+}
+
+export interface OrchestratorResponse {
+  query: string;
+  executive_synthesis: string;
+  participating_agents: string[];
+  agent_insights: AgentInsight[];
+  recommended_next_actions: string[];
+}
+
+export interface CodeReviewItem {
+  category: string;
+  severity: string;
+  line_number?: number;
+  issue: string;
+  recommendation: string;
+}
+
+export interface CodeReviewResponse {
+  score: number;
+  summary: string;
+  review_items: CodeReviewItem[];
+  suggested_refactor?: string;
+}
+
+export interface GeneratedTestsResult {
+  framework: string;
+  test_code: string;
+  test_cases_covered: string[];
+}
+
+export interface ProjectReadinessReport {
+  readiness_score: number;
+  letter_grade: string;
+  architecture_score: number;
+  code_quality_score: number;
+  test_coverage_score: number;
+  documentation_score: number;
+  summary: string;
+  passed_checks: string[];
+  critical_findings: string[];
+  actionable_roadmap: string[];
+}
+
 export function getAuthToken(): string | null {
 
 
@@ -754,6 +866,69 @@ export const api = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+
+  // Phase 7: Advanced AI - Meetings, Decision Graph, Orchestrator, Code Assistant & Readiness
+  analyzeMeeting: (projectId: string, transcriptText: string, meetingTitle?: string) =>
+    request<MeetingNoteItem>(`/projects/${projectId}/meetings/analyze`, {
+      method: "POST",
+      body: JSON.stringify({ transcript_text: transcriptText, meeting_title: meetingTitle }),
+    }),
+
+  getProjectMeetings: (projectId: string) =>
+    request<MeetingNoteItem[]>(`/projects/${projectId}/meetings`),
+
+  convertMeetingActionItems: (projectId: string, actionItemIds: string[], targetMilestoneId?: string) =>
+    request<ConvertActionItemsResponse>(`/projects/${projectId}/meetings/convert-tasks`, {
+      method: "POST",
+      body: JSON.stringify({ action_item_ids: actionItemIds, target_milestone_id: targetMilestoneId }),
+    }),
+
+  createDecision: (
+    projectId: string,
+    data: {
+      what: string;
+      why: string;
+      who?: string;
+      alternatives?: string[];
+      tags?: string[];
+      linked_task_id?: string;
+      linked_document_id?: string;
+    }
+  ) =>
+    request<ProjectDecisionItem>(`/projects/${projectId}/decisions`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  getProjectDecisions: (projectId: string) =>
+    request<ProjectDecisionItem[]>(`/projects/${projectId}/decisions`),
+
+  queryDecisionMemory: (projectId: string, query: string) =>
+    request<DecisionQueryResponse>(`/projects/${projectId}/decisions/query`, {
+      method: "POST",
+      body: JSON.stringify({ query }),
+    }),
+
+  runMultiAgentOrchestrator: (projectId: string, query: string) =>
+    request<OrchestratorResponse>(`/projects/${projectId}/orchestrator/run`, {
+      method: "POST",
+      body: JSON.stringify({ query }),
+    }),
+
+  reviewCode: (projectId: string, code: string, fileName?: string, language?: string) =>
+    request<CodeReviewResponse>(`/projects/${projectId}/code/review`, {
+      method: "POST",
+      body: JSON.stringify({ code, file_name: fileName, language }),
+    }),
+
+  generateTests: (projectId: string, code: string, fileName?: string, framework?: string) =>
+    request<GeneratedTestsResult>(`/projects/${projectId}/code/tests`, {
+      method: "POST",
+      body: JSON.stringify({ code, file_name: fileName, framework }),
+    }),
+
+  auditProjectReadiness: (projectId: string) =>
+    request<ProjectReadinessReport>(`/projects/${projectId}/readiness-audit`),
 };
 
 

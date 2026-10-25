@@ -92,17 +92,58 @@ Perform a rigorous security and code quality review. Provide line-by-line issues
                 temperature=0.2,
             )
         except Exception:
-            return CodeReviewResult(
-                score=85,
-                summary="Static analysis completed. Code follows standard syntax patterns.",
-                review_items=[
+            # Intelligent static security & code quality checks
+            items = []
+            score = 90
+            lower = code.lower()
+
+            if ("select " in lower or "from " in lower) and ("f\"" in code or "f'" in code or "%" in code or "format(" in code):
+                score -= 25
+                items.append(
+                    CodeReviewItem(
+                        severity="high",
+                        category="security",
+                        issue="Potential SQL Injection Vulnerability",
+                        recommendation="Avoid f-string or string formatting in SQL statements. Use parameterized queries with SQLAlchemy text() and bind variables.",
+                    )
+                )
+
+            if "password" in lower and ("=" in lower or ":" in lower) and any(w in lower for w in ["'123", '"123', "'pass", '"pass', "'secret"]):
+                score -= 20
+                items.append(
+                    CodeReviewItem(
+                        severity="critical",
+                        category="security",
+                        issue="Hardcoded Secret or Password Detected",
+                        recommendation="Store passwords and sensitive secrets in environment variables (.env) rather than hardcoded in source code.",
+                    )
+                )
+
+            if "except:" in code or "except Exception:" in code and "pass" in code:
+                score -= 10
+                items.append(
+                    CodeReviewItem(
+                        severity="medium",
+                        category="maintainability",
+                        issue="Silent Exception Swallowing Detected",
+                        recommendation="Avoid bare except blocks with pass. Log errors or catch specific exception classes.",
+                    )
+                )
+
+            if not items:
+                items.append(
                     CodeReviewItem(
                         severity="info",
                         category="maintainability",
                         issue="Type annotations recommended",
                         recommendation="Ensure all function parameters and return types have strict type hints.",
                     )
-                ],
+                )
+
+            return CodeReviewResult(
+                score=max(30, min(100, score)),
+                summary=f"Static code analysis completed. Detected {len(items)} review findings.",
+                review_items=items,
             )
 
     async def generate_tests(
