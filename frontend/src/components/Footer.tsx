@@ -29,6 +29,10 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms & Conditions
             </Link>
+            <Link href="/status" className="flex items-center gap-1.5 hover:text-white transition-colors text-emerald-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Status
+            </Link>
             <a
               href="https://github.com"
               target="_blank"
