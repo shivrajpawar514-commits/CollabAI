@@ -82,6 +82,16 @@ SCHEDULE = [
             ("6e22e6b", "18:45", "docs: add production deployment verification, release notes, and architecture specification"),
         ],
     },
+    {
+        "day": 8,
+        "date": "2026-10-26",
+        "tip_sha": "d421b30",
+        "commits": [
+            ("3d01a40", "10:15", "ci(infra): add GitHub Actions automated CI workflow, multi-stage frontend Dockerfile, and health verification suite"),
+            ("da9c347", "14:30", "feat(backend): implement system observability router, Prometheus metrics export, and LLM provider latency monitor"),
+            ("d421b30", "18:45", "feat(frontend): add System Diagnostics dashboard, real-time provider latency badges, and end-to-end operational test suite"),
+        ],
+    },
 ]
 
 def run_git(cmd):
@@ -112,7 +122,7 @@ def print_status():
 def push_day(target_day):
     target = next((item for item in SCHEDULE if item["day"] == target_day), None)
     if not target:
-        print(f"Error: Invalid day {target_day}. Must be between 1 and 7.")
+        print(f"Error: Invalid day {target_day}. Must be between 1 and 8.")
         sys.exit(1)
     
     tip_sha = run_git(["rev-parse", target["tip_sha"]])
@@ -128,7 +138,7 @@ def main():
     parser = argparse.ArgumentParser(description="CollabAI Daily Commit Pusher")
     parser.add_argument("--status", action="store_true", help="Display current release schedule status")
     parser.add_argument("--next", action="store_true", help="Push the next queued day's 3 commits to origin main")
-    parser.add_argument("--day", type=int, help="Push a specific day (1-7) to origin main")
+    parser.add_argument("--day", type=int, help="Push a specific day (1-8) to origin main")
     
     args = parser.parse_args()
     
@@ -139,10 +149,11 @@ def main():
         if curr is None:
             print("Cannot determine current day. Use --day N instead.")
             sys.exit(1)
-        if curr >= 7:
-            print("All 7 days (21 commits) are already pushed to main!")
+        if curr >= 8:
+            print("All 8 days (24 commits) are already pushed to main!")
             sys.exit(0)
         push_day(curr + 1)
+
     else:
         print_status()
 
