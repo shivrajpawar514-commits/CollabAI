@@ -929,6 +929,15 @@ export const api = {
 
   auditProjectReadiness: (projectId: string) =>
     request<ProjectReadinessReport>(`/projects/${projectId}/readiness-audit`),
+
+  getPitchDeck: (projectId: string) =>
+    request<any>(`/projects/${projectId}/pitch-deck`),
+
+  getPortfolioExport: (projectId: string) =>
+    request<any>(`/projects/${projectId}/portfolio-export`),
+
+  getVelocity: (projectId: string) =>
+    request<any>(`/projects/${projectId}/velocity`),
 };
 
 

@@ -31,6 +31,9 @@ import {
   Bot,
   Cpu,
   BookOpen,
+  Presentation,
+  Share2,
+  Gauge,
 } from "lucide-react";
 import {
   api,
@@ -52,6 +55,8 @@ import CopilotTab from "./components/CopilotTab";
 import ResearchTab from "./components/ResearchTab";
 import IntelligenceTab from "./components/IntelligenceTab";
 import AdvancedAiTab from "./components/AdvancedAiTab";
+import PitchDeckModal, { HackathonPitchDeck } from "@/components/PitchDeckModal";
+import PortfolioExportModal, { ProjectPortfolioExport } from "@/components/PortfolioExportModal";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -83,6 +88,47 @@ function ProjectWorkspaceContent() {
   const [decomposingTask, setDecomposingTask] = useState<Task | null>(null);
   const [showAiPlannerModal, setShowAiPlannerModal] = useState(false);
   const [showTeammateMatchModal, setShowTeammateMatchModal] = useState(false);
+
+  // Day 9: Pitch Deck & Portfolio Export State
+  const [showPitchDeckModal, setShowPitchDeckModal] = useState(false);
+  const [pitchDeck, setPitchDeck] = useState<HackathonPitchDeck | null>(null);
+  const [loadingPitchDeck, setLoadingPitchDeck] = useState(false);
+
+  const [showPortfolioModal, setShowPortfolioModal] = useState(false);
+  const [portfolioExport, setPortfolioExport] = useState<ProjectPortfolioExport | null>(null);
+  const [loadingPortfolio, setLoadingPortfolio] = useState(false);
+
+  const [velocityMetrics, setVelocityMetrics] = useState<any | null>(null);
+
+  const handleOpenPitchDeck = async () => {
+    setShowPitchDeckModal(true);
+    if (!pitchDeck) {
+      setLoadingPitchDeck(true);
+      try {
+        const res = await api.getPitchDeck(projectId);
+        setPitchDeck(res);
+      } catch {
+        // Fallback handled inside component
+      } finally {
+        setLoadingPitchDeck(false);
+      }
+    }
+  };
+
+  const handleOpenPortfolio = async () => {
+    setShowPortfolioModal(true);
+    if (!portfolioExport) {
+      setLoadingPortfolio(true);
+      try {
+        const res = await api.getPortfolioExport(projectId);
+        setPortfolioExport(res);
+      } catch {
+        // Fallback handled inside component
+      } finally {
+        setLoadingPortfolio(false);
+      }
+    }
+  };
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [files, setFiles] = useState<FileAttachment[]>([]);
@@ -132,6 +178,7 @@ function ProjectWorkspaceContent() {
     api.getFiles(projectId).then(setFiles).catch(() => {});
     api.getActivityFeed(projectId).then(setActivities).catch(() => {});
     api.listProjectInvitations(projectId).then(setInvitations).catch(() => {});
+    api.getVelocity(projectId).then(setVelocityMetrics).catch(() => {});
 
     // Setup WebSocket
     const token = getAuthToken() || "";
@@ -350,6 +397,12 @@ function ProjectWorkspaceContent() {
               <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? "bg-emerald-400" : "bg-amber-400"}`} />
               {wsConnected ? "Real-time Live" : "Offline Polling"}
             </span>
+            {velocityMetrics && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
+                <Gauge className="w-3.5 h-3.5" />
+                Velocity {velocityMetrics.velocity_grade} ({velocityMetrics.velocity_score}%)
+              </span>
+            )}
           </div>
           <p className="text-xs text-slate-400">
             {team?.name || "Student Engineering Team"} • {team?.members.length || 1} Active Collaborators • {progressPct}% Delivered
@@ -357,6 +410,20 @@ function ProjectWorkspaceContent() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={handleOpenPitchDeck}
+            className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
+            title="Generate AI Hackathon Pitch Deck"
+          >
+            <Presentation className="w-4 h-4 text-emerald-400" /> Pitch Deck
+          </button>
+          <button
+            onClick={handleOpenPortfolio}
+            className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
+            title="Export Project Portfolio Showcase"
+          >
+            <Share2 className="w-4 h-4 text-blue-400" /> Export
+          </button>
           <button
             onClick={() => setShowTaskModal(true)}
             className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition-all flex items-center gap-1.5"
@@ -1218,6 +1285,22 @@ function ProjectWorkspaceContent() {
           }}
         />
       )}
+
+      {/* MODAL: HACKATHON PITCH DECK */}
+      <PitchDeckModal
+        isOpen={showPitchDeckModal}
+        onClose={() => setShowPitchDeckModal(false)}
+        deck={pitchDeck}
+        loading={loadingPitchDeck}
+      />
+
+      {/* MODAL: PROJECT PORTFOLIO EXPORT */}
+      <PortfolioExportModal
+        isOpen={showPortfolioModal}
+        onClose={() => setShowPortfolioModal(false)}
+        portfolio={portfolioExport}
+        loading={loadingPortfolio}
+      />
     </div>
 
   );
