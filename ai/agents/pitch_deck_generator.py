@@ -76,13 +76,16 @@ Key Decisions Made: {project_context.get('decisions', [])}
 Format output strictly as structured JSON adhering to HackathonPitchDeck schema.
 """
         fallback_deck = self._get_fallback_deck(project_context)
-        return await self.client.generate_structured(
-            prompt=prompt,
-            response_schema=HackathonPitchDeck,
-            system_instruction=SYSTEM_PITCH_PROMPT,
-            temperature=0.3,
-            fallback=fallback_deck,
-        )
+        try:
+            return await self.client.generate_structured(
+                prompt=prompt,
+                schema=HackathonPitchDeck,
+                system_instruction=SYSTEM_PITCH_PROMPT,
+                temperature=0.3,
+            )
+        except Exception as e:
+            logger.warning(f"Falling back to synthesized pitch deck due to: {e}")
+            return fallback_deck
 
     def generate_portfolio_export(self, project_context: Dict[str, Any], pitch_deck: Optional[HackathonPitchDeck] = None) -> ProjectPortfolioExport:
         """
