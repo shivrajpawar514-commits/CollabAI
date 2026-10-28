@@ -26,7 +26,7 @@ class PitchDeckService:
         tasks = await task_repo.list_by_project(project_id)
         completed_tasks = [t for t in tasks if t.status in ["done", "completed"]]
 
-        adv_repo = AdvancedAiRepository(db)
+        adv_repo = AdvancedAIRepository(db)
         decisions = await adv_repo.list_decisions(project_id)
 
         # Team member count

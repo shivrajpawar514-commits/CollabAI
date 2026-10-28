@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1 import auth, users, skills, projects, teams, tasks, chat, notifications, ws, ai, rag, ml, advanced_ai, system, pitch_deck, velocity
+from app.api.v1 import auth, users, skills, projects, teams, tasks, chat, notifications, ws, ai, rag, ml, advanced_ai, system, pitch_deck, velocity, judge
 
 api_router = APIRouter()
 api_router.include_router(auth.router)
@@ -18,6 +18,7 @@ api_router.include_router(advanced_ai.router)
 api_router.include_router(system.router)
 api_router.include_router(pitch_deck.router)
 api_router.include_router(velocity.router)
+api_router.include_router(judge.router)
 
 
 
