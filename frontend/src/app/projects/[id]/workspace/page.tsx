@@ -34,6 +34,8 @@ import {
   Presentation,
   Share2,
   Gauge,
+  Trophy,
+  Award,
 } from "lucide-react";
 import {
   api,
@@ -57,6 +59,7 @@ import IntelligenceTab from "./components/IntelligenceTab";
 import AdvancedAiTab from "./components/AdvancedAiTab";
 import PitchDeckModal, { HackathonPitchDeck } from "@/components/PitchDeckModal";
 import PortfolioExportModal, { ProjectPortfolioExport } from "@/components/PortfolioExportModal";
+import JudgeEvaluationModal, { HackathonJudgeEvaluation } from "@/components/JudgeEvaluationModal";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -99,6 +102,26 @@ function ProjectWorkspaceContent() {
   const [loadingPortfolio, setLoadingPortfolio] = useState(false);
 
   const [velocityMetrics, setVelocityMetrics] = useState<any | null>(null);
+
+  // Day 10: Hackathon Judge Evaluation State
+  const [showJudgeModal, setShowJudgeModal] = useState(false);
+  const [judgeEval, setJudgeEval] = useState<HackathonJudgeEvaluation | null>(null);
+  const [loadingJudgeEval, setLoadingJudgeEval] = useState(false);
+
+  const handleOpenJudgeEval = async (forceRefresh: boolean = false) => {
+    setShowJudgeModal(true);
+    if (!judgeEval || forceRefresh) {
+      setLoadingJudgeEval(true);
+      try {
+        const res = await api.getJudgeEvaluation(projectId, forceRefresh);
+        setJudgeEval(res);
+      } catch {
+        // Handled in component
+      } finally {
+        setLoadingJudgeEval(false);
+      }
+    }
+  };
 
   const handleOpenPitchDeck = async () => {
     setShowPitchDeckModal(true);
@@ -410,6 +433,13 @@ function ProjectWorkspaceContent() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => handleOpenJudgeEval(false)}
+            className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
+            title="Simulate Hackathon Judging Panel Evaluation"
+          >
+            <Trophy className="w-4 h-4 text-amber-400" /> Judge Eval
+          </button>
           <button
             onClick={handleOpenPitchDeck}
             className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
@@ -1300,6 +1330,15 @@ function ProjectWorkspaceContent() {
         onClose={() => setShowPortfolioModal(false)}
         portfolio={portfolioExport}
         loading={loadingPortfolio}
+      />
+
+      {/* MODAL: HACKATHON JUDGE EVALUATION */}
+      <JudgeEvaluationModal
+        isOpen={showJudgeModal}
+        onClose={() => setShowJudgeModal(false)}
+        evaluation={judgeEval}
+        loading={loadingJudgeEval}
+        onRefresh={() => handleOpenJudgeEval(true)}
       />
     </div>
 

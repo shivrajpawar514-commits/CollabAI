@@ -938,7 +938,14 @@ export const api = {
 
   getVelocity: (projectId: string) =>
     request<any>(`/projects/${projectId}/velocity`),
+
+  getJudgeEvaluation: (projectId: string, refresh: boolean = false) =>
+    request<any>(`/projects/${projectId}/judge-eval${refresh ? "?refresh=true" : ""}`),
+
+  getJudgeSummary: (projectId: string) =>
+    request<any>(`/projects/${projectId}/judge-eval/summary`),
 };
+
 
 
 
