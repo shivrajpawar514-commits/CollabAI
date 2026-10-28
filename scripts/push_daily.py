@@ -102,6 +102,16 @@ SCHEDULE = [
             ("757896b", "18:45", "feat(frontend): add interactive Hackathon Pitch Deck modal, portfolio markdown exporter, and velocity telemetry card"),
         ],
     },
+    {
+        "day": 10,
+        "date": "2026-10-28",
+        "tip_sha": "4f34498",
+        "commits": [
+            ("eecaa4a", "10:15", "feat(ai): implement automated Hackathon Judge Evaluation engine, 5-criteria scoring rubric, and critique generator"),
+            ("ddbddc5", "14:30", "feat(backend): add Judge Evaluation summary API, rubric score calibration, and test suite"),
+            ("4f34498", "18:45", "feat(frontend): add interactive Hackathon Judge Scorecard modal, persona critique cards, and pitch prep checklist"),
+        ],
+    },
 ]
 
 def run_git(cmd):
@@ -132,7 +142,7 @@ def print_status():
 def push_day(target_day):
     target = next((item for item in SCHEDULE if item["day"] == target_day), None)
     if not target:
-        print(f"Error: Invalid day {target_day}. Must be between 1 and 9.")
+        print(f"Error: Invalid day {target_day}. Must be between 1 and 10.")
         sys.exit(1)
     
     tip_sha = run_git(["rev-parse", target["tip_sha"]])
@@ -148,7 +158,7 @@ def main():
     parser = argparse.ArgumentParser(description="CollabAI Daily Commit Pusher")
     parser.add_argument("--status", action="store_true", help="Display current release schedule status")
     parser.add_argument("--next", action="store_true", help="Push the next queued day's 3 commits to origin main")
-    parser.add_argument("--day", type=int, help="Push a specific day (1-9) to origin main")
+    parser.add_argument("--day", type=int, help="Push a specific day (1-10) to origin main")
     
     args = parser.parse_args()
     
@@ -159,8 +169,8 @@ def main():
         if curr is None:
             print("Cannot determine current day. Use --day N instead.")
             sys.exit(1)
-        if curr >= 9:
-            print("All 9 days (27 commits) are already pushed to main!")
+        if curr >= 10:
+            print("All 10 days (30 commits) are already pushed to main!")
             sys.exit(0)
         push_day(curr + 1)
 
