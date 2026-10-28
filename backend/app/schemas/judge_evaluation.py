@@ -29,3 +29,19 @@ class HackathonJudgeEvaluationResponse(BaseModel):
     judge_personas: List[JudgePersonaCritiqueResponse]
     top_action_items_before_pitch: List[str]
     raw_executive_critique: str
+
+
+class CriteriaRadarItem(BaseModel):
+    name: str
+    score: int
+    max_score: int = 20
+
+
+class JudgeEvaluationSummaryResponse(BaseModel):
+    project_title: str
+    overall_score: int
+    percentile_rank_estimate: str
+    verdict_badge: str
+    radar: List[CriteriaRadarItem]
+    top_recommendation: str
+

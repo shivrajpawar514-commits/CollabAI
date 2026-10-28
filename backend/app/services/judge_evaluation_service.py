@@ -73,3 +73,25 @@ class JudgeEvaluationService:
         evaluation = await self.evaluator.evaluate_project(context)
         self._cache[cache_key] = evaluation
         return evaluation
+
+    async def get_evaluation_summary(
+        self, project_id: uuid.UUID, db: AsyncSession
+    ) -> Dict[str, Any]:
+        eval_result = await self.evaluate_project(project_id, db, force_refresh=False)
+        radar = [
+            {"name": c.name, "score": c.score, "max_score": 20}
+            for c in eval_result.criteria_breakdown
+        ]
+        top_rec = (
+            eval_result.top_action_items_before_pitch[0]
+            if eval_result.top_action_items_before_pitch
+            else "Ensure live demo data is ready for judges."
+        )
+        return {
+            "project_title": eval_result.project_title,
+            "overall_score": eval_result.overall_score,
+            "percentile_rank_estimate": eval_result.percentile_rank_estimate,
+            "verdict_badge": eval_result.verdict_badge,
+            "radar": radar,
+            "top_recommendation": top_rec,
+        }

@@ -5,11 +5,31 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.api.deps import get_current_user
 from app.models.user import User
-from app.schemas.judge_evaluation import HackathonJudgeEvaluationResponse
+from app.schemas.judge_evaluation import (
+    HackathonJudgeEvaluationResponse,
+    JudgeEvaluationSummaryResponse,
+)
 from app.services.judge_evaluation_service import JudgeEvaluationService
 
 router = APIRouter(prefix="/projects", tags=["Hackathon Judge Evaluation"])
 _judge_service = JudgeEvaluationService()
+
+
+@router.get(
+    "/{project_id}/judge-eval/summary",
+    response_model=JudgeEvaluationSummaryResponse,
+    summary="Get quick summary of judge evaluation and radar metrics",
+)
+async def get_judge_evaluation_summary(
+    project_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Returns lightweight summary with overall score, rank percentile, verdict badge,
+    and 5-criteria radar scores for dashboard widgets.
+    """
+    return await _judge_service.get_evaluation_summary(project_id, db)
 
 
 @router.get(
@@ -45,3 +65,4 @@ async def run_judge_evaluation(
     Triggers an immediate evaluation run using the latest project workspace context.
     """
     return await _judge_service.evaluate_project(project_id, db, force_refresh=True)
+
