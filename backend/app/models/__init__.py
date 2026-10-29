@@ -9,6 +9,7 @@ from app.models.notification import Notification, ActivityLog
 from app.models.rag import Document, DocumentChunk, VectorType
 from app.models.ml import RecommendationFeedback
 from app.models.advanced_ai import ProjectDecision, MeetingNote, MeetingActionItem
+from app.models.github import GitHubRepositoryLink, PullRequestMetric
 
 __all__ = [
     "User",
@@ -36,6 +37,8 @@ __all__ = [
     "ProjectDecision",
     "MeetingNote",
     "MeetingActionItem",
+    "GitHubRepositoryLink",
+    "PullRequestMetric",
 ]
 
 

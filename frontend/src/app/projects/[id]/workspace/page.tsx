@@ -37,6 +37,7 @@ import {
   Trophy,
   Award,
   Network,
+  GitPullRequest,
 } from "lucide-react";
 import {
   api,
@@ -50,6 +51,8 @@ import {
   Invitation,
   User,
   getAuthToken,
+  GitHubLink,
+  PRCycleTimeAnalytics,
 } from "@/lib/api";
 import DecomposeModal from "./components/DecomposeModal";
 import AiPlannerModal from "./components/AiPlannerModal";
@@ -62,6 +65,7 @@ import PitchDeckModal, { HackathonPitchDeck } from "@/components/PitchDeckModal"
 import PortfolioExportModal, { ProjectPortfolioExport } from "@/components/PortfolioExportModal";
 import JudgeEvaluationModal, { HackathonJudgeEvaluation } from "@/components/JudgeEvaluationModal";
 import ArchitectureBlueprintModal, { SystemArchitectureBlueprint } from "@/components/ArchitectureBlueprintModal";
+import GitHubIntegrationModal from "@/components/GitHubIntegrationModal";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -126,6 +130,31 @@ function ProjectWorkspaceContent() {
         // Handled inside component
       } finally {
         setLoadingArchitecture(false);
+      }
+    }
+  };
+
+  // Phase 6: GitHub App & PR Cycle Time State
+  const [showGitHubModal, setShowGitHubModal] = useState(false);
+  const [gitHubLink, setGitHubLink] = useState<GitHubLink | null>(null);
+  const [gitHubAnalytics, setGitHubAnalytics] = useState<PRCycleTimeAnalytics | null>(null);
+  const [loadingGitHub, setLoadingGitHub] = useState(false);
+
+  const handleOpenGitHub = async (forceRefresh: boolean = false) => {
+    setShowGitHubModal(true);
+    if (!gitHubAnalytics || forceRefresh) {
+      setLoadingGitHub(true);
+      try {
+        const [statusRes, analyticsRes] = await Promise.all([
+          api.getGitHubStatus(projectId),
+          api.getGitHubAnalytics(projectId),
+        ]);
+        setGitHubLink(statusRes);
+        setGitHubAnalytics(analyticsRes);
+      } catch {
+        // Handled inside component
+      } finally {
+        setLoadingGitHub(false);
       }
     }
   };
@@ -461,6 +490,13 @@ function ProjectWorkspaceContent() {
             title="View Interactive System Architecture Blueprint"
           >
             <Network className="w-4 h-4 text-cyan-400" /> Blueprint
+          </button>
+          <button
+            onClick={() => handleOpenGitHub(false)}
+            className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
+            title="GitHub App Integration, PR Cycle Time & Grafana Metrics"
+          >
+            <GitPullRequest className="w-4 h-4 text-purple-400" /> GitHub & PRs
           </button>
           <button
             onClick={() => handleOpenJudgeEval(false)}
@@ -1377,6 +1413,18 @@ function ProjectWorkspaceContent() {
         blueprint={architectureBlueprint}
         loading={loadingArchitecture}
         onRefresh={() => handleOpenArchitecture(true)}
+      />
+
+      {/* MODAL: GITHUB APP & PR CYCLE TIME */}
+      <GitHubIntegrationModal
+        isOpen={showGitHubModal}
+        onClose={() => setShowGitHubModal(false)}
+        projectId={projectId}
+        gitHubLink={gitHubLink}
+        analytics={gitHubAnalytics}
+        loading={loadingGitHub}
+        onRefresh={() => handleOpenGitHub(true)}
+        onLinkUpdated={() => handleOpenGitHub(true)}
       />
     </div>
 

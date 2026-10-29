@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: "CollabAI Dashboards"
+    orgId: 1
+    folder: "CollabAI"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

@@ -187,7 +187,24 @@ proposal = await client.generate_structured(
 - [x] **Phase 3 (Weeks 5–7):** AI Project Generator, Structured Milestone Planner, Task Decomposition, Assignee Recommendation, Streaming SSE.
 - [x] **Phase 4 (Weeks 8–9):** Project-specific RAG with PyMuPDF chunking, `bge-small` embeddings in pgvector, Hybrid Search, and Citations.
 - [x] **Phase 5 (Weeks 10–12):** Matching Algorithm v2 & XGBoost synthetic ranking, Deadline Risk predictor, NetworkX Skill Graph. See [ml/EVALUATION_REPORT.md](ml/EVALUATION_REPORT.md) for full metrics.
-- [ ] **Phase 6 (Weeks 13–14):** GitHub App Integration, PR cycle time analytics, Prometheus + Grafana monitoring.
+- [x] **Phase 6 (Weeks 13–14):** GitHub App Integration, PR cycle time analytics, Prometheus + Grafana monitoring.
 - [x] **Phase 7 (Weeks 15–17):** Faster-Whisper Meeting-to-Tasks assistant, Project Decision Memory Graph, Multi-Agent LangGraph Orchestrator, Code Assistant, and Readiness Auditor.
+
+---
+
+## 📊 Phase 6: GitHub App Telemetry & Observability Stack
+
+CollabAI includes production-grade engineering velocity telemetry and real-time infrastructure monitoring:
+
+### 1. GitHub Integration & Webhook Ingestion
+- **Automated PR Tracking:** Links GitHub repositories (`owner/repo`) to project workspaces.
+- **Webhook Endpoint:** `/api/v1/github/webhook?project_id={id}` processes real-time GitHub App events (`pull_request.opened`, `pull_request.closed`, `pull_request.merged`).
+- **PR Cycle Time Analytics:** Computes review latency (time from PR creation to merge), fastest merge, median turnaround, and velocity verdicts (`< 6h` Elite, `< 18h` Agile, `> 24h` Bottleneck).
+- **Interactive Simulator:** Test incoming PR events and automatic task completion without external webhooks via the workspace UI modal.
+
+### 2. Prometheus & Grafana Monitoring
+- **Prometheus Exporter:** Live metric collection at `http://localhost:8000/metrics` tracking API throughput (RPS), P95/P99 gateway latency, active WebSockets, LLM inference latency, and PR cycle times.
+- **Grafana Dashboard:** Pre-provisioned at `http://localhost:3001` (user: `admin` / pass: `admin`) with datasource auto-binding and real-time telemetry panels (`monitoring/grafana/dashboards/collabai_overview.json`).
+- **Container Orchestration:** Fully integrated into `docker-compose.yml` with isolated Prometheus (`prom/prometheus:v2.51.0`) and Grafana (`grafana/grafana:10.4.0`) services.
 
 

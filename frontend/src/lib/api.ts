@@ -594,6 +594,59 @@ export interface ProjectReadinessReport {
   actionable_roadmap: string[];
 }
 
+export interface GitHubLink {
+  id: string;
+  project_id: string;
+  repo_name: string;
+  repo_url: string;
+  default_branch: string;
+  is_active: boolean;
+  last_synced_at?: string;
+  webhook_url: string;
+  created_at: string;
+}
+
+export interface PullRequestMetric {
+  id: string;
+  pr_number: number;
+  title: string;
+  author_username: string;
+  state: "open" | "merged" | "closed" | string;
+  html_url: string;
+  cycle_time_hours?: number;
+  additions: number;
+  deletions: number;
+  changed_files: number;
+  linked_task_id?: string;
+  created_at_gh: string;
+  merged_at_gh?: string;
+}
+
+export interface PRCycleTimeAnalytics {
+  project_id: string;
+  repo_name: string;
+  total_prs: number;
+  open_prs: number;
+  merged_prs: number;
+  avg_cycle_time_hours: number;
+  median_cycle_time_hours: number;
+  fastest_merge_hours: number;
+  merge_success_rate_pct: number;
+  avg_code_churn: number;
+  recent_prs: PullRequestMetric[];
+  velocity_verdict: string;
+}
+
+export interface SimulatePRPayload {
+  title: string;
+  author_username?: string;
+  hours_to_merge?: number;
+  additions?: number;
+  deletions?: number;
+  changed_files?: number;
+  auto_merge?: boolean;
+}
+
 export function getAuthToken(): string | null {
 
 
@@ -950,6 +1003,32 @@ export const api = {
 
   exportArchitectureBlueprint: (projectId: string) =>
     request<any>(`/projects/${projectId}/architecture-blueprint/export`),
+
+  getGitHubStatus: (projectId: string) =>
+    request<GitHubLink | null>(`/projects/${projectId}/github/status`),
+
+  linkGitHub: (
+    projectId: string,
+    data: { repo_name: string; repo_url: string; default_branch?: string; webhook_secret?: string }
+  ) =>
+    request<GitHubLink>(`/projects/${projectId}/github/link`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  unlinkGitHub: (projectId: string) =>
+    request<void>(`/projects/${projectId}/github/link`, {
+      method: "DELETE",
+    }),
+
+  getGitHubAnalytics: (projectId: string) =>
+    request<PRCycleTimeAnalytics>(`/projects/${projectId}/github/analytics`),
+
+  simulateGitHubPR: (projectId: string, data: SimulatePRPayload) =>
+    request<PullRequestMetric>(`/projects/${projectId}/github/simulate-pr`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 };
 
 
