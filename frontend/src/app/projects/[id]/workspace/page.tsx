@@ -36,6 +36,7 @@ import {
   Gauge,
   Trophy,
   Award,
+  Network,
 } from "lucide-react";
 import {
   api,
@@ -60,6 +61,7 @@ import AdvancedAiTab from "./components/AdvancedAiTab";
 import PitchDeckModal, { HackathonPitchDeck } from "@/components/PitchDeckModal";
 import PortfolioExportModal, { ProjectPortfolioExport } from "@/components/PortfolioExportModal";
 import JudgeEvaluationModal, { HackathonJudgeEvaluation } from "@/components/JudgeEvaluationModal";
+import ArchitectureBlueprintModal, { SystemArchitectureBlueprint } from "@/components/ArchitectureBlueprintModal";
 
 const KANBAN_COLUMNS = [
   { id: "backlog", title: "Backlog", color: "border-slate-500/40 text-slate-400" },
@@ -107,6 +109,26 @@ function ProjectWorkspaceContent() {
   const [showJudgeModal, setShowJudgeModal] = useState(false);
   const [judgeEval, setJudgeEval] = useState<HackathonJudgeEvaluation | null>(null);
   const [loadingJudgeEval, setLoadingJudgeEval] = useState(false);
+
+  // Day 11: System Architecture Blueprint State
+  const [showArchitectureModal, setShowArchitectureModal] = useState(false);
+  const [architectureBlueprint, setArchitectureBlueprint] = useState<SystemArchitectureBlueprint | null>(null);
+  const [loadingArchitecture, setLoadingArchitecture] = useState(false);
+
+  const handleOpenArchitecture = async (forceRefresh: boolean = false) => {
+    setShowArchitectureModal(true);
+    if (!architectureBlueprint || forceRefresh) {
+      setLoadingArchitecture(true);
+      try {
+        const res = await api.getArchitectureBlueprint(projectId, forceRefresh);
+        setArchitectureBlueprint(res);
+      } catch {
+        // Handled inside component
+      } finally {
+        setLoadingArchitecture(false);
+      }
+    }
+  };
 
   const handleOpenJudgeEval = async (forceRefresh: boolean = false) => {
     setShowJudgeModal(true);
@@ -433,6 +455,13 @@ function ProjectWorkspaceContent() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => handleOpenArchitecture(false)}
+            className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
+            title="View Interactive System Architecture Blueprint"
+          >
+            <Network className="w-4 h-4 text-cyan-400" /> Blueprint
+          </button>
           <button
             onClick={() => handleOpenJudgeEval(false)}
             className="px-3.5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5"
@@ -1339,6 +1368,15 @@ function ProjectWorkspaceContent() {
         evaluation={judgeEval}
         loading={loadingJudgeEval}
         onRefresh={() => handleOpenJudgeEval(true)}
+      />
+
+      {/* MODAL: SYSTEM ARCHITECTURE BLUEPRINT */}
+      <ArchitectureBlueprintModal
+        isOpen={showArchitectureModal}
+        onClose={() => setShowArchitectureModal(false)}
+        blueprint={architectureBlueprint}
+        loading={loadingArchitecture}
+        onRefresh={() => handleOpenArchitecture(true)}
       />
     </div>
 

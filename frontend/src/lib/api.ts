@@ -944,7 +944,14 @@ export const api = {
 
   getJudgeSummary: (projectId: string) =>
     request<any>(`/projects/${projectId}/judge-eval/summary`),
+
+  getArchitectureBlueprint: (projectId: string, refresh: boolean = false) =>
+    request<any>(`/projects/${projectId}/architecture-blueprint${refresh ? "?refresh=true" : ""}`),
+
+  exportArchitectureBlueprint: (projectId: string) =>
+    request<any>(`/projects/${projectId}/architecture-blueprint/export`),
 };
+
 
 
 
