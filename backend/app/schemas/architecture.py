@@ -35,3 +35,18 @@ class SystemArchitectureBlueprintResponse(BaseModel):
     mermaid_sequence: str
     security_isolation_notes: List[str]
     scaling_bottlenecks_and_mitigations: List[str]
+
+
+class LatencyBudgetSummaryResponse(BaseModel):
+    project_title: str
+    total_budget_ms: int
+    critical_path_ms: int
+    component_count: int
+    sla_compliance: str
+
+
+class ArchitectureExportResponse(BaseModel):
+    project_title: str
+    export_filename: str
+    markdown_content: str
+

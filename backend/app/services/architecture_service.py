@@ -52,3 +52,74 @@ class ArchitectureService:
         blueprint = await self.designer.generate_blueprint(context)
         self._cache[cache_key] = blueprint
         return blueprint
+
+    async def calculate_latency_budget(
+        self, project_id: uuid.UUID, db: AsyncSession
+    ) -> Dict[str, Any]:
+        blueprint = await self.get_project_blueprint(project_id, db)
+        budgets = [c.latency_budget_ms for c in blueprint.components]
+        total = sum(budgets)
+        critical_path = max(budgets) if budgets else 100
+        sla = "Passed (Under 800ms SLA)" if critical_path < 800 else "Warning (High Latency)"
+
+        return {
+            "project_title": blueprint.project_title,
+            "total_budget_ms": total,
+            "critical_path_ms": critical_path,
+            "component_count": len(blueprint.components),
+            "sla_compliance": sla,
+        }
+
+    async def export_blueprint_markdown(
+        self, project_id: uuid.UUID, db: AsyncSession
+    ) -> Dict[str, Any]:
+        blueprint = await self.get_project_blueprint(project_id, db)
+        title = blueprint.project_title
+
+        md = f"""# {title} — System Architecture & Technical Specification
+
+> **Architecture Pattern**: {blueprint.architecture_pattern}
+
+## 🏛️ Executive Overview
+{blueprint.executive_summary}
+
+---
+
+## 📐 System Architecture Diagram
+```mermaid
+{blueprint.mermaid_diagram}
+```
+
+---
+
+## ⚡ Core Data Flow & Interaction Sequence
+```mermaid
+{blueprint.mermaid_sequence}
+```
+
+---
+
+## 🧩 Subsystem & Component Matrix
+
+| Component | Category | Tech Stack | Latency SLA | Key Responsibilities |
+| :--- | :---: | :--- | :---: | :--- |
+"""
+        for comp in blueprint.components:
+            resps = "; ".join(comp.responsibilities)
+            md += f"| **{comp.name}** | `{comp.category}` | {comp.tech_stack} | {comp.latency_budget_ms} ms | {resps} |\n"
+
+        md += "\n---\n\n## 🔒 Security & Isolation Policies\n"
+        for note in blueprint.security_isolation_notes:
+            md += f"- [x] {note}\n"
+
+        md += "\n## 📈 Scalability Mitigations\n"
+        for mit in blueprint.scaling_bottlenecks_and_mitigations:
+            md += f"- **Scaling Consideration**: {mit}\n"
+
+        slug = title.lower().replace(" ", "-")
+        return {
+            "project_title": title,
+            "export_filename": f"{slug}-ARCHITECTURE.md",
+            "markdown_content": md,
+        }
+

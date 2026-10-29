@@ -66,11 +66,14 @@ def test_ai_adapters():
         from ai.agents.memory_graph import ProjectMemoryEngine
         from ai.agents.orchestrator import MultiAgentOrchestrator
         from ai.agents.code_assistant import CodeAssistant
+        from ai.agents.pitch_deck_generator import PitchDeckGenerator
+        from ai.agents.judge_evaluator import JudgeEvaluator
+        from ai.agents.architecture_designer import ArchitectureDesigner
 
         client = LLMClient()
         provider = client.provider_name
         print(f"   {check_mark(True)} Unified LLMClient loaded. Active provider: {provider}")
-        print(f"   {check_mark(True)} Autonomous AI agents (MeetingAssistant, MemoryGraph, Orchestrator, CodeAssistant) ready.")
+        print(f"   {check_mark(True)} Autonomous AI agents (MeetingAssistant, MemoryGraph, Orchestrator, CodeAssistant, PitchDeckGenerator, JudgeEvaluator, ArchitectureDesigner) ready.")
         return True
     except Exception as e:
         print(f"   {check_mark(False)} AI engine initialization error: {e}")
