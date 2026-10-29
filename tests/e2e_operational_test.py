@@ -25,7 +25,11 @@ from ai.agents.memory_graph import ProjectMemoryEngine
 from ai.agents.orchestrator import MultiAgentOrchestrator
 from ai.agents.code_assistant import CodeAssistant
 from ai.ml.matching_v2 import MatchingEngineV2
-from app.api.v1.system import get_system_status
+try:
+    from app.api.v1.system import get_system_status  # type: ignore
+except ImportError:
+    from backend.app.api.v1.system import get_system_status  # type: ignore
+
 
 
 class MockDBSession:

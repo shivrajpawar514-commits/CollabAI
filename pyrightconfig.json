@@ -1,0 +1,29 @@
+{
+  "include": [
+    "ai",
+    "backend",
+    "scripts",
+    "tests"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "backend/venv",
+    ".next"
+  ],
+  "extraPaths": [
+    "backend",
+    "."
+  ],
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": [
+        "backend",
+        "."
+      ]
+    }
+  ],
+  "pythonVersion": "3.11",
+  "reportMissingImports": "warning"
+}

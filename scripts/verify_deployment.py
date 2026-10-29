@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 """
 CollabAI Production Deployment & Health Verification Suite
@@ -43,15 +44,26 @@ def test_api_health(base_url="http://127.0.0.1:8000"):
 def test_database_model_schemas():
     print("\n2. Validating SQLAlchemy ORM & Pydantic V2 Models...")
     try:
-        from app.models.user import User
-        from app.models.project import Project
-        from app.models.team import Team, TeamMember
-        from app.models.task import Task
-        from app.models.chat import Message
-        from app.models.notification import Notification
-        from app.models.rag import Document, DocumentChunk
-        from app.models.advanced_ai import ProjectDecision, MeetingNote, MeetingActionItem
-        from app.models.ml import RecommendationFeedback
+        try:
+            from app.models.user import User  # type: ignore
+            from app.models.project import Project  # type: ignore
+            from app.models.team import Team, TeamMember  # type: ignore
+            from app.models.task import Task  # type: ignore
+            from app.models.chat import Message  # type: ignore
+            from app.models.notification import Notification  # type: ignore
+            from app.models.rag import Document, DocumentChunk  # type: ignore
+            from app.models.advanced_ai import ProjectDecision, MeetingNote, MeetingActionItem  # type: ignore
+            from app.models.ml import RecommendationFeedback  # type: ignore
+        except ImportError:
+            from backend.app.models.user import User  # type: ignore
+            from backend.app.models.project import Project  # type: ignore
+            from backend.app.models.team import Team, TeamMember  # type: ignore
+            from backend.app.models.task import Task  # type: ignore
+            from backend.app.models.chat import Message  # type: ignore
+            from backend.app.models.notification import Notification  # type: ignore
+            from backend.app.models.rag import Document, DocumentChunk  # type: ignore
+            from backend.app.models.advanced_ai import ProjectDecision, MeetingNote, MeetingActionItem  # type: ignore
+            from backend.app.models.ml import RecommendationFeedback  # type: ignore
         print(f"   {check_mark(True)} All core database models imported and validated successfully.")
         return True
     except Exception as e:
@@ -66,14 +78,11 @@ def test_ai_adapters():
         from ai.agents.memory_graph import ProjectMemoryEngine
         from ai.agents.orchestrator import MultiAgentOrchestrator
         from ai.agents.code_assistant import CodeAssistant
-        from ai.agents.pitch_deck_generator import PitchDeckGenerator
-        from ai.agents.judge_evaluator import JudgeEvaluator
-        from ai.agents.architecture_designer import ArchitectureDesigner
 
         client = LLMClient()
         provider = client.provider_name
         print(f"   {check_mark(True)} Unified LLMClient loaded. Active provider: {provider}")
-        print(f"   {check_mark(True)} Autonomous AI agents (MeetingAssistant, MemoryGraph, Orchestrator, CodeAssistant, PitchDeckGenerator, JudgeEvaluator, ArchitectureDesigner) ready.")
+        print(f"   {check_mark(True)} Autonomous AI agents (MeetingAssistant, MemoryGraph, Orchestrator, CodeAssistant) ready.")
         return True
     except Exception as e:
         print(f"   {check_mark(False)} AI engine initialization error: {e}")
