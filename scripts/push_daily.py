@@ -129,10 +129,22 @@ def run_git(cmd):
 
 def get_current_day():
     main_rev = run_git(["rev-parse", "refs/heads/main"])
-    for item in SCHEDULE:
+    for item in reversed(SCHEDULE):
         full_tip = run_git(["rev-parse", item["tip_sha"]])
         if main_rev == full_tip:
             return item["day"]
+    for item in reversed(SCHEDULE):
+        full_tip = run_git(["rev-parse", item["tip_sha"]])
+        try:
+            subprocess.check_call(
+                ["git", "merge-base", "--is-ancestor", full_tip, main_rev],
+                cwd=REPO_DIR,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            return item["day"]
+        except subprocess.CalledProcessError:
+            continue
     return None
 
 def print_status():
